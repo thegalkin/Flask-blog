@@ -15,6 +15,14 @@ from flask_basicauth import BasicAuth
 
 
 app = Flask(__name__)
+
+app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
+
+admin = Admin(app, name='microblog', template_mode='bootstrap3')
+
+app.config['BASIC_AUTH_USERNAME'] = 'admin'
+app.config['BASIC_AUTH_PASSWORD'] = '1234'
+basic_auth = BasicAuth(app)
 @app.route('/')
 @app.route('/index')
 def main():
@@ -30,15 +38,14 @@ def texts():
 @basic_auth.required
 def editor():
     return render_template("editor.html")   
+@app.route('/admin')
+@basic_auth.required
+def admin():
+    return render_template("admin/index.html")
 
 
 
 
-app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
-admin = Admin(app, name='microblog', template_mode='bootstrap3')
-
-app.config['BASIC_AUTH_USERNAME'] = 'admin'
-app.config['BASIC_AUTH_PASSWORD'] = '1234'
 
 
 
