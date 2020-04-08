@@ -1,6 +1,6 @@
 import sqlite3
-conn = sqlite3.connect("texts.db")
+conn = sqlite3.connect("users.db")
 c = conn.cursor()
-c.execute('''CREATE TABLE texts (textName, textContent, author, date)''')
+c.execute('''CREATE TABLE users (login, password)''')
 conn.commit()
 conn.close()
