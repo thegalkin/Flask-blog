@@ -42,6 +42,9 @@ def texts():
 @basic_auth.required
 def editor():
     return render_template("editor.html")   
+@app.route('/about')
+def about():
+    return render_template("about.html")
 """@app.route('/admin')
 @basic_auth.required
 def admin():
