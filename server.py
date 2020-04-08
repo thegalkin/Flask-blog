@@ -1,8 +1,14 @@
-from flask import Flask
+from flask import Flask, render_template,
+
 app = Flask(__name__)
-@app.route("/user/<id>/")
-def user_profile(id):
-    return "this page belongs to user #{}".format(id)
-    
+
+@app.route('/')
+@app.route('/index')
+def main():
+    return render_template("index.html")
+
+@app.route('/texts/<textName>')
+def texts():
+    return render_template("texts.html")   
 if __name__ == "__main__":
     app.run(debug=True)
