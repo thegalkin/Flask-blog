@@ -3,12 +3,12 @@
 {% if textName %}
 <title>{{ textName}}</title>
 {% else %}
-<title>404</title>
+<META HTTP-EQUIV="REFRESH" CONTENT="1; URL=404.html">
 {% endif %}
 </head>
 <body>
-<h1>Title</h1>
-<div>Lorem Impsum dolor set amet</div>
+<h1>{{textName}}</h1>
+<pre>{{textContents}}</pre>
 
 
 
