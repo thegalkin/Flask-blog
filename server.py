@@ -2,11 +2,9 @@ from flask import Flask, render_template
 import sqlite3
 #from flask_admin import Admin
 from flask_basicauth import BasicAuth
-
-
-
-
-
+from flask_wtf import FlaskForm
+from wtforms import StringField
+from wtforms.validators import DataRequired
 
 
 
@@ -21,10 +19,25 @@ app = Flask(__name__)
 #admin = Admin(app, name='microblog', template_mode='bootstrap3')
 
 app.config['BASIC_AUTH_USERNAME'] = 'admin'
-app.config['BASIC_AUTH_PASSWORD'] = '1234'
+app.config['BASIC_AUTH_PASSWORD'] = '123456789'
 app.config['BASIC_AUTH_USERNAME'] = 'user'
-app.config['BASIC_AUTH_PASSWORD'] = '1234'
+app.config['BASIC_AUTH_PASSWORD'] = '123456789'
 basic_auth = BasicAuth(app)
+
+class registrationForm(FlaskForm):
+    email = TextField('email', [validators.Length(min=4, max=50)])
+    password = PasswordField('password', [
+        validators.Length(min = 9, max=30)
+        
+    ])
+@app.route('/submit', methods = ('GET', 'POST'))
+def submit():
+    form = registrationForm()
+    if form.validate_on_submit():
+        return redirect('success')
+    return render_template('register.html', form=form)
+
+
 @app.route('/')
 @app.route('/index')
 def main():
