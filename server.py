@@ -2,9 +2,9 @@ from flask import Flask, render_template
 import sqlite3
 #from flask_admin import Admin
 from flask_basicauth import BasicAuth
-from flask_wtf import FlaskForm
+"""from flask_wtf import FlaskForm
 from wtforms import StringField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired"""
 
 
 
@@ -24,7 +24,8 @@ app.config['BASIC_AUTH_USERNAME'] = 'user'
 app.config['BASIC_AUTH_PASSWORD'] = '123456789'
 basic_auth = BasicAuth(app)
 
-class registrationForm(FlaskForm):
+#urllib2 - сломан. изначально.
+"""class registrationForm(FlaskForm):
     email = TextField('email', [validators.Length(min=4, max=50)])
     password = PasswordField('password', [
         validators.Length(min = 9, max=30)
@@ -36,7 +37,18 @@ def submit():
     if form.validate_on_submit():
         return redirect('success')
     return render_template('register.html', form=form)
+"""
 
+@app.route('/register/', methods=['POST', 'GET'])
+def reg():
+    if request.method == 'POST':
+        email = request.form['inputEmail']
+        password = request.form['inputPassword']
+
+    
+
+if __name__ == '__main__':
+    app.run()
 
 @app.route('/')
 @app.route('/index')
