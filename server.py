@@ -1,10 +1,11 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import sqlite3
 #from flask_admin import Admin
 from flask_basicauth import BasicAuth
 """from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import DataRequired"""
+
 
 
 
@@ -42,13 +43,23 @@ def submit():
 @app.route('/register/', methods=['POST', 'GET'])
 def reg():
     if request.method == 'POST':
+        
         email = request.form['inputEmail']
         password = request.form['inputPassword']
+        conn = sqlite3.connect('users.db')
+        c = conn.cursor()
+        x = c.execute("SELECT * FROM users WHERE symbol=?", email)
+        if len(x) > 0:
+            registerStatus = False
+        else:
+            reger = [(email, password)]
+            c.execute("INSERT INTO users VALUES (?,?)", reger)
+            conn.commit()
+            conn.close()
 
     
 
-if __name__ == '__main__':
-    app.run()
+
 
 @app.route('/')
 @app.route('/index')

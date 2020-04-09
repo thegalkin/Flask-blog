@@ -33,7 +33,8 @@
             <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button">Зарегистрироваться</button>
         </form>
       </div>
- 
+      {{if registerStatus == False}}
+            <script><alert>Такой пользователь уже существует</alert></script>
        
  
       <footer class="footer">
