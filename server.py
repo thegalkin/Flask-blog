@@ -56,7 +56,7 @@ def reg():
             c.execute("INSERT INTO users VALUES (?,?)", reger)
             conn.commit()
             conn.close()
-
+    return render_template("register.html")
     
 
 
@@ -65,9 +65,9 @@ def reg():
 @app.route('/index')
 def main():
     return render_template("index.html")
-@app.route('/register')
-def register():
-    return render_template("register.html")
+#@app.route('/register')
+#def register():
+ #   return render_template("register.html")
 @app.route('/texts/<textName>')
 @app.errorhandler(404)
 def page_not_found(error):
