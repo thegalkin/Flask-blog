@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, json
 import sqlite3
 #from flask_admin import Admin
 from flask_basicauth import BasicAuth
@@ -56,7 +56,7 @@ def regForm():
             c.execute("INSERT INTO users VALUES (?,?)", reger)
             conn.commit()
             conn.close()
-            
+
 @app.route('/register')
 def reg():
     return render_template("register.html")
