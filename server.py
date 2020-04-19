@@ -40,8 +40,8 @@ def submit():
     return render_template('register.html', form=form)
 """
 
-@app.route('/register/', methods=['POST', 'GET'])
-def reg():
+@app.route('/regForm', methods=['POST', 'GET'])
+def regForm():
     if request.method == 'POST':
         
         email = request.form['inputEmail']
@@ -56,7 +56,9 @@ def reg():
             c.execute("INSERT INTO users VALUES (?,?)", reger)
             conn.commit()
             conn.close()
-    #return render_template("register.html")
+@app.route('/register')
+def reg():
+    return render_template("register.html")
     
 
 
