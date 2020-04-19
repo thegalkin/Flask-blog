@@ -56,6 +56,7 @@ def regForm():
             c.execute("INSERT INTO users VALUES (?,?)", reger)
             conn.commit()
             conn.close()
+            
 @app.route('/register')
 def reg():
     return render_template("register.html")
