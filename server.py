@@ -43,20 +43,24 @@ def submit():
 @app.route('/register', methods=('POST', 'GET'))
 def regForm():
     if request.method == 'POST':
-        
+        f = open("dev_output.txt", "a+")
         email = request.form['inputEmail']
+        f.write("email is:", email)
         password = request.form['inputPassword']
         conn = sqlite3.connect('users.db')
-        return render_template("404.html")#("register attempt with:",email, password)
         c = conn.cursor()
-        x = c.execute("SELECT * FROM users WHERE symbol=?", email)
+        c.execute("SELECT * FROM `users` WHERE login=?", (email,))
+        x = c.fetchall()
         if len(x) > 0:
             registerStatus = False
         else:
-            reger = [(email, password)]
-            c.execute("INSERT INTO users VALUES (?,?)", reger)
+            reger = [email, password]
+            f.write("reger is:",reger)
+            f.close()
+            c.execute("INSERT INTO users VALUES (?,?)", (reger,))
             conn.commit()
             conn.close()
+            
     return render_template("register.html")
 """@app.route('/register')
 def reg():"""
