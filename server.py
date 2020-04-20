@@ -40,13 +40,14 @@ def submit():
     return render_template('register.html', form=form)
 """
 
-@app.route('/regForm', methods=['POST', 'GET'])
+@app.route('/register', methods=('POST', 'GET'))
 def regForm():
     if request.method == 'POST':
         
         email = request.form['inputEmail']
         password = request.form['inputPassword']
         conn = sqlite3.connect('users.db')
+        return render_template("404.html")#("register attempt with:",email, password)
         c = conn.cursor()
         x = c.execute("SELECT * FROM users WHERE symbol=?", email)
         if len(x) > 0:
@@ -56,10 +57,10 @@ def regForm():
             c.execute("INSERT INTO users VALUES (?,?)", reger)
             conn.commit()
             conn.close()
-
-@app.route('/register')
-def reg():
     return render_template("register.html")
+"""@app.route('/register')
+def reg():"""
+    
     
 
 

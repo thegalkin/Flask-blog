@@ -23,13 +23,13 @@
  
       <div class="jumbotron">
         <h1>Регистрация</h1>
-        <form class="form-signup" method="POST" action="http://127.0.0.1:5000/regForm">
+        <form class="form-signup" method="POST" action="/register">
             <label for="inputEmail" class="sr-only">Email</label>
-            <input type="email" name="inputEmail" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+            <input type="inputEmail" name="inputEmail" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
             <label for="inputPassword" class="sr-only">Пароль</label>
-            <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
+            <input type="inputPassword" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
             
-            <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button">Зарегистрироваться</button>
+            <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" formaction="/register" type="button">Зарегистрироваться</button>
         </form>
       </div>
       {%if registerStatus == False%}
