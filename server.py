@@ -5,6 +5,7 @@ import sqlite3
 import bcrypt
 
 
+
 app = Flask(__name__)
 app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
 
@@ -23,15 +24,15 @@ def login():
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
         c.execute("SELECT password FROM `users` WHERE login=?;", (login,))
-        f.write("{}\n".format(c))
+        #f.write("{}\n".format(c))
         hashedPassword = c.fetchall()
         if len(hashedPassword) != 0:
             #хеш проверка и итог
-            hashedPassword = str(hashedPassword)
-            f.write("{}\n".format(hashedPassword))
-            f.write(str(hashedPassword.encode("utf-8")))
+            
+            f.write("{}\n".format(hashedPassword[0][0]))
             f.close()
-            if bcrypt.checkpw(password.encode("utf-8"), hashedPassword.encode("utf-8")):
+            hashedPassword = hashedPassword[0][0]
+            if bcrypt.checkpw(password.encode("utf-8"), hashedPassword):
                 return render_template("editor.html", login=login)
             else:
                 return render_template("loginError.html")
@@ -39,9 +40,6 @@ def login():
             return render_template("loginError.html")
 
     return render_template("login.html")
-
-
-
 
 
 
