@@ -15,23 +15,29 @@ from wtforms.validators import DataRequired"""
 
 app = Flask(__name__)
 app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
+
 app.config['BASIC_AUTH_USERNAME'] = 'admin'
 app.config['BASIC_AUTH_PASSWORD'] = '123456789'
 #app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 #admin = Admin(app, name='microblog', template_mode='bootstrap3')
-def basAuth():
-    conn = sqlite3.connect('users.db')
-    c = conn.cursor()
-    c.execute("SELECT * FROM `users`")
-    x = c.fetchall()
-    for line in x:
-        app.config['BASIC_AUTH_USERNAME'] = line[0]
-        app.config['BASIC_AUTH_PASSWORD'] = line[1]
-    basic_auth = BasicAuth(app)
-    c.close()
-basAuth()
+
+conn = sqlite3.connect('users.db')
+c = conn.cursor()
+c.execute("SELECT * FROM `users`")
+x = c.fetchall()
+f = open("dev_output.txt", "a+")
+for line in x:
+    """f.write(line[0])
+    f.write(" ")
+    f.write(line[1])
+    f.write("\n")"""
+    app.config['BASIC_AUTH_USERNAME'] = line[0]
+    app.config['BASIC_AUTH_PASSWORD'] = line[1]
+f.close()
+c.close()
 
 basic_auth = BasicAuth(app)
+
 
 @app.route('/register', methods=('POST', 'GET'))
 def regForm():
