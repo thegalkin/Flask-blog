@@ -14,7 +14,7 @@ from wtforms.validators import DataRequired"""
 
 
 app = Flask(__name__)
-
+app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
 #app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 
 #admin = Admin(app, name='microblog', template_mode='bootstrap3')
@@ -54,7 +54,6 @@ def regForm():
         x = c.fetchall()
         if len(x) > 0:
             registerStatus = False
-            flash("Такой пользователь уже существует")
             
         else:
             reger = [email, password]

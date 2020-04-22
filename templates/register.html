@@ -32,10 +32,10 @@
             <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" formaction="/register" type="submit">Зарегистрироваться</button>
         </form>
       </div>
-      {%if registerStatus == False%}
+      {%if registerStatus == False %}
             <script><alert>Такой пользователь уже существует</alert></script>
             <META HTTP-EQUIV="REFRESH" CONTENT="1; URL=register.html">
-      {%endif%}
+      {% endif %}
  
       <footer class="footer">
         <p>Блог Никиты</p>
