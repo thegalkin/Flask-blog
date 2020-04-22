@@ -31,29 +31,49 @@ def login()
         app.config['BASIC_AUTH_PASSWORD'] = line[1]
     f.close()
     c.close()
+    if request.method == 'POST':
+        login = request.form['inputLogin']
+        password = request.form['inputPassword'].encode("utf-8")
+        conn = sqlite3.connect('users.db')
+        c = conn.cursor()
+        c.execute("SELECT password FROM `users` WHERE login=?;", (login,))
+        hashedPassword = c.fetchall()
+        if bcrypt.checkpw(password, hashedPassword):
+            return render_template("editor.html", login=login)
+        else:
+            return render_template("loginError.html")
+        
 
-basic_auth = BasicAuth(app)
+    return render_template("register.html")
+
+
+
+
+
+
+
+
+
 
 
 @app.route('/register', methods=('POST', 'GET'))
 def regForm():
     
     if request.method == 'POST':
-        #f = open("dev_output.txt", "a+")
-        email = request.form['inputEmail']
+        login = request.form['inputLogin']
         #f.write("email is:{}".format(email))
-        password = request.form['inputPassword']
+        password = request.form['inputPassword'].encode('UTF-8')
         #f.write("password is:{}".format(password))
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
-        c.execute("SELECT * FROM `users` WHERE login=?;", (email,))
+        c.execute("SELECT * FROM `users` WHERE login=?;", (login,))
         x = c.fetchall()
         if len(x) > 0:
             registerStatus = False
             
             return redirect(url_for("AuthError"))
         else:
-            reger = [email, password]
+            reger = [login, bcrypt.hashpw(password, bcrypt.gensalt())]
             #f.write("reger is:{}".format(reger))
             #f.close()
             c.execute("INSERT INTO users VALUES (?,?);", reger)
