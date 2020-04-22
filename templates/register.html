@@ -2,10 +2,15 @@
 <html lang="en">
   <head>
     <title>Регистрация</title>
- 
+    
+
     
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
-    
+    <script>
+      function popup() {
+       document.getElementById('welcome').innerHTML = 'Такой пользователь уже существует';
+      }
+      </script>
   </head>
  
   <body>
@@ -32,10 +37,11 @@
             <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" formaction="/register" type="submit">Зарегистрироваться</button>
         </form>
       </div>
-      {%if registerStatus == False %}
-            <script><alert>Такой пользователь уже существует</alert></script>
-            <META HTTP-EQUIV="REFRESH" CONTENT="1; URL=register.html">
-      {% endif %}
+    {% if registerStatus == False %}
+    <div class="popup" onclick="myFunction()">Click me!
+      <span class="popuptext" id="myPopup">Popup text...</span>
+    </div>
+    {% endif %}
  
       <footer class="footer">
         <p>Блог Никиты</p>

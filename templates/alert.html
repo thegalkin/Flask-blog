@@ -1,0 +1,18 @@
+{% with messeges = get_flashed_messages() %}
+      % if messages %}
+        <ul class=flashes>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+    {% endwith %}
+
+
+
+
+
+
+
+    <script type="text/javascript">alert("Такой пользователь уже существует")</script>
+          <META HTTP-EQUIV="REFRESH" CONTENT="1; URL=register.html">
