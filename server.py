@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, json
+from flask import Flask, render_template, request, json, flash
 import sqlite3
 #from flask_admin import Admin
 from flask_basicauth import BasicAuth
@@ -54,6 +54,8 @@ def regForm():
         x = c.fetchall()
         if len(x) > 0:
             registerStatus = False
+            flash("Такой пользователь уже существует")
+            
         else:
             reger = [email, password]
             #f.write("reger is:{}".format(reger))
