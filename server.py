@@ -15,30 +15,23 @@ from wtforms.validators import DataRequired"""
 
 app = Flask(__name__)
 app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
-#app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
-
-#admin = Admin(app, name='microblog', template_mode='bootstrap3')
-
 app.config['BASIC_AUTH_USERNAME'] = 'admin'
 app.config['BASIC_AUTH_PASSWORD'] = '123456789'
-app.config['BASIC_AUTH_USERNAME'] = 'user'
-app.config['BASIC_AUTH_PASSWORD'] = '123456789'
-basic_auth = BasicAuth(app)
+#app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
+#admin = Admin(app, name='microblog', template_mode='bootstrap3')
+def basAuth():
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM `users`")
+    x = c.fetchall()
+    for line in x:
+        app.config['BASIC_AUTH_USERNAME'] = line[0]
+        app.config['BASIC_AUTH_PASSWORD'] = line[1]
+    basic_auth = BasicAuth(app)
+    c.close()
+basAuth()
 
-#urllib2 - сломан. изначально.
-"""class registrationForm(FlaskForm):
-    email = TextField('email', [validators.Length(min=4, max=50)])
-    password = PasswordField('password', [
-        validators.Length(min = 9, max=30)
-        
-    ])
-@app.route('/submit', methods = ('GET', 'POST'))
-def submit():
-    form = registrationForm()
-    if form.validate_on_submit():
-        return redirect('success')
-    return render_template('register.html', form=form)
-"""
+basic_auth = BasicAuth(app)
 
 @app.route('/register', methods=('POST', 'GET'))
 def regForm():
@@ -55,8 +48,8 @@ def regForm():
         x = c.fetchall()
         if len(x) > 0:
             registerStatus = False
-            #redirect(url_for("AuthError"))
-            return render_template("AuthError.html")
+            
+            return redirect(url_for("AuthError"))
         else:
             reger = [email, password]
             #f.write("reger is:{}".format(reger))
