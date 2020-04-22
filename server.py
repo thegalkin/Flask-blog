@@ -2,9 +2,6 @@ from flask import Flask, render_template, request, json, flash, redirect, url_fo
 import sqlite3
 #from flask_admin import Admin
 #from flask_basicauth import BasicAuth
-"""from flask_wtf import FlaskForm
-from wtforms import StringField
-from wtforms.validators import DataRequired"""
 import bcrypt
 
 
@@ -14,38 +11,34 @@ app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
 #app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 #admin = Admin(app, name='microblog', template_mode='bootstrap3')
 
-
-@app.route("/login")
-def login()
-    conn = sqlite3.connect('users.db')
-    c = conn.cursor()
-    c.execute("SELECT * FROM `users`")
-    x = c.fetchall()
+#Логин
+@app.route("/login", methods=('POST', 'GET'))
+def login():
     f = open("dev_output.txt", "a+")
-    for line in x:
-        """f.write(line[0])
-        f.write(" ")
-        f.write(line[1])
-        f.write("\n")"""
-        app.config['BASIC_AUTH_USERNAME'] = line[0]
-        app.config['BASIC_AUTH_PASSWORD'] = line[1]
-    f.close()
-    c.close()
     if request.method == 'POST':
+        #подключение форм
         login = request.form['inputLogin']
-        password = request.form['inputPassword'].encode("utf-8")
+        password = request.form['inputPassword']
+        #подключение бд
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
         c.execute("SELECT password FROM `users` WHERE login=?;", (login,))
+        f.write("{}\n".format(c))
         hashedPassword = c.fetchall()
-        if bcrypt.checkpw(password, hashedPassword):
-            return render_template("editor.html", login=login)
+        if len(hashedPassword) != 0:
+            #хеш проверка и итог
+            hashedPassword = str(hashedPassword)
+            f.write("{}\n".format(hashedPassword))
+            f.write(str(hashedPassword.encode("utf-8")))
+            f.close()
+            if bcrypt.checkpw(password.encode("utf-8"), hashedPassword.encode("utf-8")):
+                return render_template("editor.html", login=login)
+            else:
+                return render_template("loginError.html")
         else:
             return render_template("loginError.html")
-        
 
-    return render_template("register.html")
-
+    return render_template("login.html")
 
 
 
@@ -56,6 +49,7 @@ def login()
 
 
 
+#Регистрация
 @app.route('/register', methods=('POST', 'GET'))
 def regForm():
     
@@ -79,10 +73,9 @@ def regForm():
             c.execute("INSERT INTO users VALUES (?,?);", reger)
             conn.commit()
             conn.close()
-            return redirect(url_for("editor"))
+            return redirect(url_for("login"))
     return render_template("register.html")
-"""@app.route('/register')
-def reg():"""
+
     
     
 @app.route("/AuthError")
@@ -102,9 +95,7 @@ def page_not_found(error):
     return render_template('404.html'), 404
 def texts():
     return render_template("texts.html")
-@app.route('/editor')
-@basic_auth.required
-def editor():
+def editor(login):
     return render_template("editor.html")   
 @app.route('/about')
 def about():
