@@ -64,7 +64,7 @@ def regForm():
             c.execute("INSERT INTO users VALUES (?,?);", reger)
             conn.commit()
             conn.close()
-            redirect("/editor")
+            return redirect(url_for("editor"))
     return render_template("register.html")
 """@app.route('/register')
 def reg():"""
