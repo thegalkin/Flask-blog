@@ -7,6 +7,44 @@ from wtforms import StringField
 from wtforms.validators import DataRequired"""
 
 
+<<<<<<< Updated upstream
+=======
+app = Flask(__name__)
+app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
+
+#app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
+#admin = Admin(app, name='microblog', template_mode='bootstrap3')
+
+#Логин
+@app.route("/login", methods=('POST', 'GET'))
+def login():
+    f = open("dev_output.txt", "a+")
+    if request.method == 'POST':
+        #подключение форм
+        login = request.form['inputLogin']
+        password = request.form['inputPassword']
+        #подключение бд
+        conn = sqlite3.connect('users.db')
+        c = conn.cursor()
+        c.execute("SELECT password FROM `users` WHERE login=?;", (login,))
+        #f.write("{}\n".format(c))
+        hashedPassword = c.fetchall()
+        if len(hashedPassword) != 0:
+            #хеш проверка и итог
+            
+            f.write("{}\n".format(hashedPassword[0][0]))
+            f.close()
+            hashedPassword = hashedPassword[0][0]
+            if bcrypt.checkpw(password.encode("utf-8"), hashedPassword):
+                return render_template("editor.html", login=login)
+            else:
+                return render_template("loginError.html")
+        else:
+            return render_template("loginError.html")
+
+    return render_template("login.html")
+
+>>>>>>> Stashed changes
 
 
 
