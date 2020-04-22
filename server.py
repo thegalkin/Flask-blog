@@ -1,14 +1,11 @@
 from flask import Flask, render_template, request, json, flash, redirect, url_for
 import sqlite3
 #from flask_admin import Admin
-from flask_basicauth import BasicAuth
-"""from flask_wtf import FlaskForm
-from wtforms import StringField
-from wtforms.validators import DataRequired"""
+#from flask_basicauth import BasicAuth
+import bcrypt
 
 
-<<<<<<< Updated upstream
-=======
+
 app = Flask(__name__)
 app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
 
@@ -44,68 +41,39 @@ def login():
 
     return render_template("login.html")
 
->>>>>>> Stashed changes
 
 
 
 
 
 
-app = Flask(__name__)
-app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
-#app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
-
-#admin = Admin(app, name='microblog', template_mode='bootstrap3')
-
-app.config['BASIC_AUTH_USERNAME'] = 'admin'
-app.config['BASIC_AUTH_PASSWORD'] = '123456789'
-app.config['BASIC_AUTH_USERNAME'] = 'user'
-app.config['BASIC_AUTH_PASSWORD'] = '123456789'
-basic_auth = BasicAuth(app)
-
-#urllib2 - сломан. изначально.
-"""class registrationForm(FlaskForm):
-    email = TextField('email', [validators.Length(min=4, max=50)])
-    password = PasswordField('password', [
-        validators.Length(min = 9, max=30)
-        
-    ])
-@app.route('/submit', methods = ('GET', 'POST'))
-def submit():
-    form = registrationForm()
-    if form.validate_on_submit():
-        return redirect('success')
-    return render_template('register.html', form=form)
-"""
-
+#Регистрация
 @app.route('/register', methods=('POST', 'GET'))
 def regForm():
     
     if request.method == 'POST':
-        #f = open("dev_output.txt", "a+")
-        email = request.form['inputEmail']
+        login = request.form['inputLogin']
         #f.write("email is:{}".format(email))
-        password = request.form['inputPassword']
+        password = request.form['inputPassword'].encode('UTF-8')
         #f.write("password is:{}".format(password))
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
-        c.execute("SELECT * FROM `users` WHERE login=?;", (email,))
+        c.execute("SELECT * FROM `users` WHERE login=?;", (login,))
         x = c.fetchall()
         if len(x) > 0:
             registerStatus = False
-            #redirect(url_for("AuthError"))
-            return render_template("AuthError.html")
+            
+            return redirect(url_for("AuthError"))
         else:
-            reger = [email, password]
+            reger = [login, bcrypt.hashpw(password, bcrypt.gensalt())]
             #f.write("reger is:{}".format(reger))
             #f.close()
             c.execute("INSERT INTO users VALUES (?,?);", reger)
             conn.commit()
             conn.close()
-            return redirect(url_for("editor"))
+            return redirect(url_for("login"))
     return render_template("register.html")
-"""@app.route('/register')
-def reg():"""
+
     
     
 @app.route("/AuthError")
@@ -125,9 +93,7 @@ def page_not_found(error):
     return render_template('404.html'), 404
 def texts():
     return render_template("texts.html")
-@app.route('/editor')
-@basic_auth.required
-def editor():
+def editor(login):
     return render_template("editor.html")   
 @app.route('/about')
 def about():
