@@ -44,8 +44,6 @@ def login():
 
 
 
-a= 0
-
 
 #Регистрация
 @app.route('/register', methods=('POST', 'GET'))
