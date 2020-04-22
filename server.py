@@ -1,40 +1,36 @@
 from flask import Flask, render_template, request, json, flash, redirect, url_for
 import sqlite3
 #from flask_admin import Admin
-from flask_basicauth import BasicAuth
+#from flask_basicauth import BasicAuth
 """from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import DataRequired"""
-
-
-
-
-
-
+import bcrypt
 
 
 app = Flask(__name__)
 app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
 
-app.config['BASIC_AUTH_USERNAME'] = 'admin'
-app.config['BASIC_AUTH_PASSWORD'] = '123456789'
 #app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 #admin = Admin(app, name='microblog', template_mode='bootstrap3')
 
-conn = sqlite3.connect('users.db')
-c = conn.cursor()
-c.execute("SELECT * FROM `users`")
-x = c.fetchall()
-f = open("dev_output.txt", "a+")
-for line in x:
-    """f.write(line[0])
-    f.write(" ")
-    f.write(line[1])
-    f.write("\n")"""
-    app.config['BASIC_AUTH_USERNAME'] = line[0]
-    app.config['BASIC_AUTH_PASSWORD'] = line[1]
-f.close()
-c.close()
+
+@app.route("/login")
+def login()
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM `users`")
+    x = c.fetchall()
+    f = open("dev_output.txt", "a+")
+    for line in x:
+        """f.write(line[0])
+        f.write(" ")
+        f.write(line[1])
+        f.write("\n")"""
+        app.config['BASIC_AUTH_USERNAME'] = line[0]
+        app.config['BASIC_AUTH_PASSWORD'] = line[1]
+    f.close()
+    c.close()
 
 basic_auth = BasicAuth(app)
 
