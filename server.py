@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, json, flash
+from flask import Flask, render_template, request, json, flash, redirect, url_for
 import sqlite3
 #from flask_admin import Admin
 from flask_basicauth import BasicAuth
@@ -42,6 +42,7 @@ def submit():
 
 @app.route('/register', methods=('POST', 'GET'))
 def regForm():
+    
     if request.method == 'POST':
         #f = open("dev_output.txt", "a+")
         email = request.form['inputEmail']
@@ -54,7 +55,8 @@ def regForm():
         x = c.fetchall()
         if len(x) > 0:
             registerStatus = False
-            
+            #redirect(url_for("AuthError"))
+            return render_template("AuthError.html")
         else:
             reger = [email, password]
             #f.write("reger is:{}".format(reger))
@@ -62,14 +64,15 @@ def regForm():
             c.execute("INSERT INTO users VALUES (?,?);", reger)
             conn.commit()
             conn.close()
-            
+            redirect("/editor")
     return render_template("register.html")
 """@app.route('/register')
 def reg():"""
     
     
-
-
+@app.route("/AuthError")
+def AuthError():
+    return render_template("AuthError.html")
 
 @app.route('/')
 @app.route('/index')
