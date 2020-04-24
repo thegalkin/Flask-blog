@@ -98,12 +98,12 @@ def about():
 def user():
     conn = sqlite3.connect("userData.db")
     c = conn.cursor()
-    
+
 
 
     conn.commit()
     conn.close()
-
+    return render_template(userPage.html)
 
 
 
