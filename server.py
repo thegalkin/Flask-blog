@@ -94,9 +94,15 @@ def editor(login):
 @app.route('/about')
 def about():
     return render_template("about.html")
-
+@app.route('/id/<userID>')
 def user():
+    conn = sqlite3.connect("userData.db")
+    c = conn.cursor()
     
+
+
+    conn.commit()
+    conn.close()
 
 
 
