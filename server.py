@@ -95,7 +95,8 @@ def editor(login):
 def about():
     return render_template("about.html")
 
-
+def user():
+    
 
 
 
