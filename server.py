@@ -3,14 +3,10 @@ import sqlite3
 #from flask_admin import Admin
 #from flask_basicauth import BasicAuth
 import bcrypt
-
-
-
 app = Flask(__name__)
 app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
 
-#app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
-#admin = Admin(app, name='microblog', template_mode='bootstrap3')
+
 
 #Логин
 @app.route("/login", methods=('POST', 'GET'))
@@ -41,10 +37,6 @@ def login():
 
     return render_template("login.html")
 
-
-
-
-
 #Регистрация
 @app.route('/register', methods=('POST', 'GET'))
 def regForm():
@@ -73,33 +65,74 @@ def regForm():
     return render_template("register.html")
 
     
-    
+#Ошибка аутентификации    
 @app.route("/AuthError")
 def AuthError():
     return render_template("AuthError.html")
 
+#Главная
 @app.route('/')
 @app.route('/index')
 def main():
     return render_template("index.html")
-@app.route('/register')
-def register():
-    return render_template("register.html")
+
+#404
 @app.route('/texts/<textName>')
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html'), 404
+
+#Тексты
 def texts():
     return render_template("texts.html")
+
+#Текстовый редактор
 def editor(login):
     return render_template("editor.html")   
+
+#О создателях
 @app.route('/about')
 def about():
     return render_template("about.html")
+
+
+
+
+
+
+
+
+
+#code trash
+"""app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
+admin = Admin(app, name='microblog', template_mode='bootstrap3')"""
+"""@app.route('/register')
+def register():
+    return render_template("register.html")"""
 """@app.route('/admin')
 @basic_auth.required
 def admin():
     return render_template("admin/index.html")"""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
