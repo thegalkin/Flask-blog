@@ -100,6 +100,10 @@ def user(userID):
     c = conn.cursor()
     temp = "images/users/{}.jpg".format(userID)
     imageLink = url_for('static', filename=temp)
+    about = c.execute("SELECT about FROM `userData` WHERE nick=?", userID)
+    posts = c.execute("SELECT posts FROM `userData` WHERE nick=?", userID)
+    for post in posts:
+        
 
     conn.commit()
     conn.close()
