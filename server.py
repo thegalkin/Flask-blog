@@ -102,11 +102,21 @@ def user(userID):
     imageLink = url_for('static', filename=temp)
     about = c.execute("SELECT about FROM `userData` WHERE nick=?", userID)
     posts = c.execute("SELECT posts FROM `userData` WHERE nick=?", userID)
+    connTexts = sqlite3.connect("texts.db")
+    g = conn.cursor()
+    temp = ""
     for post in posts:
-        
+        temp += post
+        temp += " OR "
+    fullPostData = g.execute("SELECT * FROM `texts` WHERE texName MATCH {}".format(temp))
+    f = open("dev_output.txt", a)
+    f.write(fullPostData)
+    f.close()
 
     conn.commit()
     conn.close()
+    connTexts.commit()
+    connTexts.close()
     return render_template("userPage.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about)
 
 
