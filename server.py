@@ -96,20 +96,24 @@ def about():
     return render_template("about.html")
 @app.route('/id/<userID>')
 def user(userID):
+    f = open("dev_output.txt", a)
+    connTexts = sqlite3.connect("texts.db")
+    g = connTexts.cursor()
     conn = sqlite3.connect("userData.db")
     c = conn.cursor()
     temp = "images/users/{}.jpg".format(userID)
     imageLink = url_for('static', filename=temp)
-    about = c.execute("SELECT about FROM `userData` WHERE nick=?", userID)
-    posts = c.execute("SELECT posts FROM `userData` WHERE nick=?", userID)
-    connTexts = sqlite3.connect("texts.db")
-    g = conn.cursor()
+    about = c.execute("SELECT about FROM `userData` WHERE nick=?", (userID,))
+    posts = c.execute("SELECT posts FROM `userData` WHERE nick=?", (userID,))
     temp = ""
     for post in posts:
         temp += post
         temp += " OR "
-    fullPostData = g.execute("SELECT * FROM `texts` WHERE texName MATCH {}".format(temp))
-    f = open("dev_output.txt", a)
+
+    
+    f.write(posts)
+    fullPostData = g.execute("SELECT * FROM `texts` WHERE rowid MATCH {}".format(temp))
+    
     f.write(fullPostData)
     f.close()
 
