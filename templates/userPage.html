@@ -3,10 +3,29 @@
     <head>
         <title>{{ nick }}</title>
         <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">
+        <style>
+            .round {
+             border-radius: 100px; /* Радиус скругления */
+            }
+           </style>
     </head>
     <body>
-        <div class = "row mb-5">
-            <
+        <div class="row mb-5">
+            <div class="col-md"></div>
+            <div class="col-md">
+                <div class = "container" >
+                    <div class = "row mb-5">
+                        <div class="col-md"><h3>{{nick}}</h3>
+                        <p><h6>{{about}}</h6></p>
+                        </div>
+                        <div class="col-md"><img src = {{imageLink}} alt="" class="round" width="100" height="100"></div>
+                        <div class="col-md"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md"></div>
+            
+            </div>
         </div>
     </body>
 </html>

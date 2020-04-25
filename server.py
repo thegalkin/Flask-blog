@@ -98,12 +98,12 @@ def about():
 def user(userID):
     conn = sqlite3.connect("userData.db")
     c = conn.cursor()
-    
-
+    temp = "images/users/{}.jpg".format(userID)
+    imageLink = url_for('static', filename=temp)
 
     conn.commit()
     conn.close()
-    return render_template("userPage.html", bootstrapTheme=bootstrapTheme, nick=userID)
+    return render_template("userPage.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about)
 
 
 
