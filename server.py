@@ -5,7 +5,7 @@ import sqlite3
 import bcrypt
 app = Flask(__name__)
 app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
-bootstrapTheme = '<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">'
+bootstrapTheme = """<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">"""
 nick = ""
 
 #Логин
@@ -95,15 +95,15 @@ def editor(login):
 def about():
     return render_template("about.html")
 @app.route('/id/<userID>')
-def user(userID, bootstrapTheme):
+def user(userID):
     conn = sqlite3.connect("userData.db")
     c = conn.cursor()
-
+    
 
 
     conn.commit()
     conn.close()
-    return render_template("userPage.html", bootstrapTheme=bootstrapTheme)
+    return render_template("userPage.html", bootstrapTheme=bootstrapTheme, nick=userID)
 
 
 
