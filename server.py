@@ -108,16 +108,19 @@ def user(userID):
     about = c.execute("SELECT about FROM `userData` WHERE nick=?", (userID,))
     posts = c.execute("SELECT posts FROM `userData` WHERE nick=?", (userID,))
     temp = ""
+    # Страшный костыль, который избавляет от еще большего ужаса из базы данных вида: [('[1,2]',)]
+    posts = posts.fetchall()
+    posts = str(posts)
+    posts = posts[posts.find("'")+2:posts.rfind("'")-1]
+    posts.replaceall(",", " OR ")
+    f.write(posts + "\n")
     
-    for post in posts[0]:
-        temp += str(post)
-        temp += " OR "
 
-    f.write(temp)
-    f.close()
-    fullPostData = g.execute("SELECT * FROM `texts` WHERE rowid MATCH {}".format(temp))
     
-    f.write(fullPostData)
+    f.close()
+    #fullPostData = g.execute("SELECT * FROM `texts` WHERE rowid MATCH {}".format(temp))
+    
+    #f.write(fullPostData)
     
 
     conn.commit()
