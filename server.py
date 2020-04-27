@@ -114,14 +114,14 @@ def user(userID):
     posts = posts[posts.find("'")+2:posts.rfind("'")-1]
     while posts.find(",") != -1:
         posts = posts.replace(",", " OR ")
-    f.write(posts + "\n")
+    #f.write(posts + "\n")
     
 
     
     f.close()
-    #fullPostData = g.execute("SELECT * FROM `texts` WHERE rowid MATCH {}".format(temp))
+    fullPostData = g.execute("SELECT textName FROM `texts` WHERE te MATCH ?", posts)
     
-    #f.write(fullPostData)
+    f.write(str(fullPostData))
     
 
     conn.commit()
