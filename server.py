@@ -95,10 +95,10 @@ def editor(login):
 def about():
     return render_template("about.html")
 
-#User Page
+ #User Page
 @app.route('/id/<userID>')
 def user(userID):
-    f = open("dev_output.txt", a)
+    f = open("dev_output.txt", "a")
     connTexts = sqlite3.connect("texts.db")
     g = connTexts.cursor()
     conn = sqlite3.connect("userData.db")
@@ -108,16 +108,17 @@ def user(userID):
     about = c.execute("SELECT about FROM `userData` WHERE nick=?", (userID,))
     posts = c.execute("SELECT posts FROM `userData` WHERE nick=?", (userID,))
     temp = ""
-    for post in posts:
-        temp += post
+    
+    for post in posts[0]:
+        temp += str(post)
         temp += " OR "
 
-    
-    f.write(posts)
+    f.write(temp)
+    f.close()
     fullPostData = g.execute("SELECT * FROM `texts` WHERE rowid MATCH {}".format(temp))
     
     f.write(fullPostData)
-    f.close()
+    
 
     conn.commit()
     conn.close()
