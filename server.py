@@ -112,7 +112,8 @@ def user(userID):
     posts = posts.fetchall()
     posts = str(posts)
     posts = posts[posts.find("'")+2:posts.rfind("'")-1]
-    posts.replaceall(",", " OR ")
+    while posts.find(",") != -1:
+        posts = posts.replace(",", " OR ")
     f.write(posts + "\n")
     
 
