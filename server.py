@@ -117,9 +117,9 @@ def user(userID):
         posts = posts.replace(",", " OR ")"""
     #f.write(posts + "\n")
     posts = posts.split(",")
-    rposts = [int(posts[i] for i in range(len(posts)))]
+    posts = [int(posts[i]) for i in range(len(posts))]
     #f.write(str(posts) + "\n")
-    posts = rposts
+    
     fullPostData = g.execute("SELECT * FROM `texts` WHERE ID=?", (posts,))
     
     f.write(str(fullPostData))
