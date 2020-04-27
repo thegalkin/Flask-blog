@@ -94,6 +94,8 @@ def editor(login):
 @app.route('/about')
 def about():
     return render_template("about.html")
+
+#User Page
 @app.route('/id/<userID>')
 def user(userID):
     f = open("dev_output.txt", a)
