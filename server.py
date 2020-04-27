@@ -112,22 +112,24 @@ def user(userID):
     posts = posts.fetchall()
     posts = str(posts)
     posts = posts[posts.find("'")+2:posts.rfind("'")-1]
+    """
     while posts.find(",") != -1:
-        posts = posts.replace(",", " OR ")
+        posts = posts.replace(",", " OR ")"""
     #f.write(posts + "\n")
-    
-
-    
-    f.close()
-    fullPostData = g.execute("SELECT textName FROM `texts` WHERE te MATCH ?", posts)
+    posts = posts.split(",")
+    rposts = [int(posts[i] for i in range(len(posts)))]
+    #f.write(str(posts) + "\n")
+    posts = rposts
+    fullPostData = g.execute("SELECT * FROM `texts` WHERE ID=?", (posts,))
     
     f.write(str(fullPostData))
     
 
-    conn.commit()
+    conn.commit()   
     conn.close()
     connTexts.commit()
     connTexts.close()
+    f.close()
     return render_template("userPage.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about)
 
 
