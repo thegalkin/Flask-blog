@@ -118,11 +118,11 @@ def user(userID):
     #f.write(posts + "\n")
     posts = posts.split(",")
     posts = [int(posts[i]) for i in range(len(posts))]
-    #f.write(str(posts) + "\n")
+    f.write(str(posts) + " - posts" + "\n")
     
-    fullPostData = g.execute("SELECT * FROM `texts` WHERE ID=?", (posts,))
+    fullPostData = g.execute("SELECT * FROM `texts` WHERE ID=?;", [posts,])
     
-    f.write(str(fullPostData))
+    f.write(str(fullPostData.fetchall()))
     
 
     conn.commit()   
