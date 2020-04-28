@@ -105,18 +105,18 @@ def user(userID):
     c = conn.cursor()
     temp = "images/users/{}.jpg".format(userID)
     imageLink = url_for('static', filename=temp)
-    about = c.execute("SELECT about FROM `userData` WHERE nick=?", (userID,))
-    posts = c.execute("SELECT posts FROM `userData` WHERE nick=?", (userID,))
-    temp = ""
+    about = c.execute("SELECT about FROM `userData` WHERE nick=?;", (userID,))
+    #posts = c.execute("SELECT posts FROM `userData` WHERE nick=?;", (userID,))
+    #temp = ""
     about = about.fetchall()
     # Страшный костыль, который избавляет от еще большего ужаса из базы данных вида: [('[1,2]',)]
-    """posts = posts.fetchall()
-    posts = str(posts)
-    posts = posts[posts.find("'")+2:posts.rfind("'")-1]"""
-    """
-    while posts.find(",") != -1:
-        posts = posts.replace(",", " OR ")"""
-    #f.write(posts + "\n")
+    
+    about = str(about)
+    about = about[about.find("'")+1:about.rfind("'")]
+    
+    """while about.find(",") != -1:
+        about = about.replace(",", " OR ")"""
+    
     """posts = posts.split(",")
     posts = [int(posts[i]) for i in range(len(posts))]
     f.write(str(posts) + " - posts" + "\n")"""
