@@ -33,31 +33,36 @@
         </div>
         <div class="row mb-5" >
             <div class="col-md"></div>
-            <div class="col-md">
-                <div class = "container" >
+            
+                
+                <div class = "center-block" >
                     {% block poster %}
                     {% for post in fullPostData %}
-                        <div class = "row mb-5">
-                            <div class="col-md"><img src = {{imageLink}} alt="" class="round" width="30" height="30"></div>
-                            <div class="col-md"><h6>{{ post[1] }}</h6>
-                            <p><h6>{{ post[3] }}</h6></p>
+                        <div class = "row md-5">
+                            <div class="row md-5">
+                                <div class="col-md"><img src = {{imageLink}} alt="" class="round" width="50" height="50"></div>
+                                    <div class="col-md">
+                                        <h6>{{ post[3] }}</h6>
+                                        
+                                    
+                                    </div>
+                                <div class="col-md"><p><i>{{ post[4] }}</i></p></div>
+                                
                             </div>
-                            <div class="col-md"><p><i>{{ post[4] }}</i></p></div>
-                            
-                            
                         </div>
+                        <p><h3>{{ post[1] }}</h6></p>
                         <div class = "row md-5">
                             {% if post[2]|length > 83 %}
                                 <div class="col-md"><p>{{ post[2][:83] }}</p></div>
                             {% else %}
-                                <div class="col-md"><p>{{ post[2][:post|length / 100 * 10] }}</p></div>
+                                <div class="col-md"><p>{{ post[2]}}</p></div>
                             {% endif %}
                         </div>
                     {% endfor %}
                     {% endblock %}
                 </div>
-            </div>
             
+            <div class="col-md"></div>
         </div>
     </body>
 </html>
