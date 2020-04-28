@@ -108,21 +108,24 @@ def user(userID):
     about = c.execute("SELECT about FROM `userData` WHERE nick=?", (userID,))
     posts = c.execute("SELECT posts FROM `userData` WHERE nick=?", (userID,))
     temp = ""
+    about = about.fetchall()
     # Страшный костыль, который избавляет от еще большего ужаса из базы данных вида: [('[1,2]',)]
-    posts = posts.fetchall()
+    """posts = posts.fetchall()
     posts = str(posts)
-    posts = posts[posts.find("'")+2:posts.rfind("'")-1]
+    posts = posts[posts.find("'")+2:posts.rfind("'")-1]"""
     """
     while posts.find(",") != -1:
         posts = posts.replace(",", " OR ")"""
     #f.write(posts + "\n")
-    posts = posts.split(",")
+    """posts = posts.split(",")
     posts = [int(posts[i]) for i in range(len(posts))]
-    f.write(str(posts) + " - posts" + "\n")
+    f.write(str(posts) + " - posts" + "\n")"""
     
     #fullPostData = texts.query.filter_by(userID=author).first_or_404()
 
-
+    """{% lilPost = 83 %}
+                        
+                            {% lilPost = post/100 * 10 %}"""
     fullPostData = g.execute("SELECT * FROM `texts` WHERE author=?;", (userID,))
     fullPostData = fullPostData.fetchall()
     f.write(str(fullPostData[0]))
