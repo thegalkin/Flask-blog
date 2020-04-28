@@ -136,7 +136,7 @@ def user(userID):
     connTexts.commit()
     connTexts.close()
     f.close()
-    return render_template("userPage.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about)
+    return render_template("userPage.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about, fullPostData=fullPostData)
 
 
 

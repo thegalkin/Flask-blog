@@ -47,10 +47,10 @@
                             
                         </div>
                         <div class = "row md-5">
-                            {% if len(post[2]) > 83 %}
+                            {% if post[2]|length > 83 %}
                                 <div class="col-md"><p>{{ post[2][:83] }}</p></div>
                             {% else %}
-                                <div class="col-md"><p>{{ post[2][:len(post)/100 * 10] }}</p></div>
+                                <div class="col-md"><p>{{ post[2][:post|length / 100 * 10] }}</p></div>
                             {% endif %}
                         </div>
                     {% endfor %}
