@@ -120,9 +120,13 @@ def user(userID):
     posts = [int(posts[i]) for i in range(len(posts))]
     f.write(str(posts) + " - posts" + "\n")
     
-    fullPostData = g.execute("SELECT * FROM `texts` WHERE ID=?;", [posts,])
+    #fullPostData = texts.query.filter_by(userID=author).first_or_404()
+
+
+    fullPostData = g.execute("SELECT * FROM `texts` WHERE author=?;", (userID,))
+    fullPostData = fullPostData.fetchall()
     
-    f.write(str(fullPostData.fetchall()))
+    f.write(str(fullPostData[0]))
     
 
     conn.commit()   
