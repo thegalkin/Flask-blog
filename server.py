@@ -125,7 +125,6 @@ def user(userID):
 
     fullPostData = g.execute("SELECT * FROM `texts` WHERE author=?;", (userID,))
     fullPostData = fullPostData.fetchall()
-    
     f.write(str(fullPostData[0]))
     
 
