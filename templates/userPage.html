@@ -2,7 +2,8 @@
 <html>
     <head>
         <title>{{ nick }}</title>
-        <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">
+        {#<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">#}
+        <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/darkly/bootstrap.min.css" rel="stylesheet" integrity="sha384-rCA2D+D9QXuP2TomtQwd+uP50EHjpafN+wruul0sXZzX/Da7Txn4tB9aLMZV4DZm" crossorigin="anonymous">
         <style>
             .round {
              border-radius: 100px; /* Радиус скругления */
@@ -31,6 +32,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="row mb-5" >
             <div class="col-md"></div>
             
@@ -38,29 +40,32 @@
                 <div class = "center-block" >
                     {% block poster %}
                     {% for post in fullPostData %}
-                        <div class = "row ">
-                            <div class="col md-5">
-                                <div class="col-md"><img src = {{imageLink}} alt="" class="round" width="50" height="50"></div>
-                                    <div class="col-md">
-                                        <h6>{{ post[3] }}</h6>
-                                        <p><i>{{ post[4] }} · {{(post|length / 1500)|round(0, "ceil")|int}} min read</i></p>
+                        <div class = "jumbotron">
+                            <div class = "row ">
+                                <div class="col-md-2">
+                                    <div class="col-md"><img src = {{imageLink}} alt="" class="round" width="50" height="50"></div>
+                                        
                                     
-                                    </div>
-                                <div class="col-md"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6>{{ post[3] }}</h6>
+                                    <p><i>{{ post[4] }} · {{(post|length / 1500)|round(0, "ceil")|int}} min read</i></p>
                                 
+                                </div>
+                                <div class="col-md"></div>
                             </div>
-                        </div>
-                        
-                        <div class = "row">
-                            <p><h3>{{ post[1] }}</h3></p>
-                        </div>
 
-                        <div class = "row">
-                            {% if post[2]|length > 83 %}
-                                <div class="col-md"><p>{{ post[2][:83] }}</p></div>
-                            {% else %}
-                                <div class="col-md"><p>{{ post[2]}}</p></div>
-                            {% endif %}
+                            <div class = "row">
+                                <p><h3>{{ post[1] }}</h3></p>
+                            </div>
+
+                            <div class = "row">
+                                {% if post[2]|length > 83 %}
+                                    <p>{{ post[2][:83] }}...</p>
+                                {% else %}
+                                    <p>{{ post[2]}}...</p>
+                                {% endif %}
+                            </div>
                         </div>
                     {% endfor %}
                     {% endblock %}
