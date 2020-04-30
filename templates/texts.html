@@ -3,7 +3,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">
     {#<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">#}
 {% if textName %}
-<title>{{ textName}}</title>
+<title>{{ textName}}, {{author}}'s post</title>
 {% else %}
 <META HTTP-EQUIV="REFRESH" CONTENT="1; URL=404.html">
 {% endif %}
@@ -31,17 +31,20 @@
 </style>
 </head>
 <body>
+{% import 'headAndFeet.html' as headAndFeet %}
+{{ headAndFeet.header }}
 <div class="row">
     <div class = "col-md"></div>
         <div class = "col-md">
             <p><h1 class="serifh1">{{textName}}</h1>
             <h3 class = "serifh2">{{date}} by <a href = "/id/{{author}}">{{author}}</a></h3></p>
             <p class = "serif" >{{textContents}}</p>
+            
         </div>
     <div class = "col-md"></div>
 </div>
 
-<footer>Блог Никиты</footer>
+
 </body>
 
 
