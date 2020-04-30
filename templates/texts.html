@@ -10,17 +10,35 @@
 <style>
     .serif {
         font-family: Georgia, 'Times New Roman', Times, serif;
+        font-size: 21px;
+        line-height: 32px;
+        font-weight: 400;
+        
+
+    }
+    .serifh1 {
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-size: 40px;
+        line-height: 48px;
+        font-weight: 400;
+    }
+    .serifh2{
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-size: 20px;
+        line-height: 48px;
+        font-weight: 400;
     }
 </style>
 </head>
 <body>
 <div class="row">
-    <div class = "col-md-5"></div>
-        <div class = "col-md-5">
-            <h1>{{textName}}</h1>
+    <div class = "col-md"></div>
+        <div class = "col-md">
+            <p><h1 class="serifh1">{{textName}}</h1>
+            <h3 class = "serifh2">{{date}} by {{author}}</h3></p>
             <p class = "serif" >{{textContents}}</p>
         </div>
-    <div class = "col-md-5"></div>
+    <div class = "col-md"></div>
 </div>
 
 <footer>Блог Никиты</footer>
