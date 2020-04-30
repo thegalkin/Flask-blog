@@ -2,9 +2,8 @@
 <html>
     <head>
         <title>{{ nick }}</title>
-        {#<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">#}
-        <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/darkly/bootstrap.min.css" rel="stylesheet" integrity="sha384-rCA2D+D9QXuP2TomtQwd+uP50EHjpafN+wruul0sXZzX/Da7Txn4tB9aLMZV4DZm" crossorigin="anonymous">
         {% include '/styles.html' %}
+           </style>
     </head>
     <body>
         <div class="pt-4 bg-warning">
@@ -29,7 +28,7 @@
                 </div>
             </div>
         </div>
-        
+        {% include 'header.html' %}
         <div class="row mb-5" >
             <div class="col-md"></div>
             
