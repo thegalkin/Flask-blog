@@ -7,32 +7,10 @@
 {% else %}
 <META HTTP-EQUIV="REFRESH" CONTENT="1; URL=404.html">
 {% endif %}
-<style>
-    .serif {
-        font-family: Georgia, 'Times New Roman', Times, serif;
-        font-size: 21px;
-        line-height: 32px;
-        font-weight: 400;
-        
-
-    }
-    .serifh1 {
-        font-family: Georgia, 'Times New Roman', Times, serif;
-        font-size: 40px;
-        line-height: 48px;
-        font-weight: 400;
-    }
-    .serifh2{
-        font-family: Georgia, 'Times New Roman', Times, serif;
-        font-size: 17px;
-        line-height: 48px;
-        font-weight: 400;
-    }
-</style>
+{% include '/styles.html' %}
 </head>
 <body>
-{% import 'headAndFeet.html' as headAndFeet %}
-{{ headAndFeet.header }}
+{% include 'header.html' %}
 <div class="row">
     <div class = "col-md"></div>
         <div class = "col-md">
