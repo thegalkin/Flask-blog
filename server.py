@@ -77,14 +77,26 @@ def main():
     return render_template("index.html")
 
 #404
-@app.route('/texts/<textName>')
+
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html'), 404
 
 #Тексты
-def texts():
-    return render_template("texts.html")
+@app.route("/texts/<textIDinput>")
+def texts(textIDinput):
+    connTexts = sqlite3.connect("texts.db")
+    g = connTexts.cursor()
+    fullPostData = g.execute("SELECT * FROM `texts` WHERE ID=?;", (textIDinput,))
+    fullPostData = fullPostData.fetchall()
+    with open("dev_output.txt", "a") as f:
+        f.write(str(textIDinput) +  "-fullpost \n")
+    fullPostData = fullPostData[0]
+    textName = fullPostData[1]
+    textContents = fullPostData[2]
+    author = fullPostData[3]
+    date = fullPostData[4]
+    return render_template("texts.html", textIDinput=textIDinput, textName=textName, textContents=textContents, author=author, date=date)
 
 #Текстовый редактор
 def editor(login):

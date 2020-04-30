@@ -7,13 +7,23 @@
 {% else %}
 <META HTTP-EQUIV="REFRESH" CONTENT="1; URL=404.html">
 {% endif %}
+<style>
+    .serif {
+        font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+</style>
 </head>
 <body>
-<h1>{{textName}}</h1>
-<pre>{{textContents}}</pre>
+<div class="row">
+    <div class = "col-md-5"></div>
+        <div class = "col-md-5">
+            <h1>{{textName}}</h1>
+            <p class = "serif" >{{textContents}}</p>
+        </div>
+    <div class = "col-md-5"></div>
+</div>
 
-
-
+<footer>Блог Никиты</footer>
 </body>
 
 
