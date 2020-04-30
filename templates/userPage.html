@@ -8,6 +8,26 @@
             .round {
              border-radius: 100px; /* Радиус скругления */
             }
+            .serif {
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-size: 21px;
+                line-height: 32px;
+                font-weight: 400;
+        
+
+            }
+            .serifh1 {
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-size: 40px;
+                line-height: 48px;
+                font-weight: 400;
+            }
+            .serifh2{
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-size: 17px;
+                line-height: 48px;
+                font-weight: 400;
+            }
            </style>
     </head>
     <body>
@@ -64,9 +84,9 @@
 
                             <div class = "row">
                                 {% if post[2]|length > 83 %}
-                                    <p>{{ post[2][:83] }}...</p>
+                                    <p class = "serif">{{ post[2][:83] }}...</p>
                                 {% else %}
-                                    <p>{{ post[2]}}...</p>
+                                    <p class = "serif">{{ post[2]}}...</p>
                                 {% endif %}
                             </div>
                             <div class = "row">
