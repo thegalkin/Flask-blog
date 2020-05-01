@@ -80,7 +80,7 @@ def main():
     conn = sqlite3.connect("userData.db")
     c = conn.cursor()
     
-    latestPosts = g.execute("SELECT * FROM `texts` ORDER BY date ASC LIMIT 5;")
+    latestPosts = g.execute("SELECT * FROM `texts` ORDER BY dateComputer ASC LIMIT 5;")
     latestPosts = latestPosts.fetchall()
      
     conn.commit()   
