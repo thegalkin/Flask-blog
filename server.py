@@ -74,20 +74,12 @@ def AuthError():
 @app.route('/')
 @app.route('/index')
 def main():
-    f = open("dev_output.txt", "a")
     connTexts = sqlite3.connect("texts.db")
     g = connTexts.cursor()
-    conn = sqlite3.connect("userData.db")
-    c = conn.cursor()
-    
     latestPosts = g.execute("SELECT * FROM `texts` ORDER BY dateComputer ASC LIMIT 5;")
     latestPosts = latestPosts.fetchall()
-     
-    conn.commit()   
-    conn.close()
     connTexts.commit()
     connTexts.close()
-    f.close()
     return render_template("index.html", fullPostData=latestPosts)
 
 #404
@@ -103,8 +95,6 @@ def texts(textIDinput):
     g = connTexts.cursor()
     fullPostData = g.execute("SELECT * FROM `texts` WHERE ID=?;", (textIDinput,))
     fullPostData = fullPostData.fetchall()
-    with open("dev_output.txt", "a") as f:
-        f.write(str(textIDinput) +  "-fullpost \n")
     fullPostData = fullPostData[0]
     textName = fullPostData[1]
     textContents = fullPostData[2]
