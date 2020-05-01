@@ -83,7 +83,7 @@ def main():
     
     about = c.execute("SELECT about FROM `userData` WHERE nick=?;", (userID,))
     about = about.fetchall()
-    latestPosts = g.execute("SELECT * FROM `texts` WHERE ")
+    latestPosts = g.execute("SELECT * FROM `texts` ORDER BY  LIMIT 0,5")
     # Страшный костыль, который избавляет от еще большего ужаса из базы данных вида: [('[1,2]',)]
     about = str(about)
     about = about[about.find("'")+1:about.rfind("'")]
