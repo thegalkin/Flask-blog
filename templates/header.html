@@ -6,18 +6,48 @@
   
     <div class="collapse navbar-collapse" id="navbarColor02">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
+        {% if titleName == "index" %}
+          <li class="nav-item active">
+            <a class="nav-link serif" href="/index">Home <span class="sr-only">(current)</span></a>
+          </li>
+        {% else %}
+        <li class="nav-item">
           <a class="nav-link serif" href="/index">Home <span class="sr-only">(current)</span></a>
         </li>
+        {% endif %}
+        {% if titleName == index %}
+         
+        {% else %}
+        
+        {% endif %}
+        {% if titleName == "signIn" %}
+        <li class="nav-item active">
+          <a class="nav-link serif" href="/login">Post smth.<span class="sr-only">(current)</span></a>
+        </li>
+        {% else %}
         <li class="nav-item">
           <a class="nav-link serif" href="/login">Post smth.</a>
         </li>
+        {% endif %}
+        {% if titleName == "about" %}
+        <li class="nav-item active">
+          <a class="nav-link serif" href="about">About <span class="sr-only">(current)</span></a>
+        </li>
+        {% else %}
         <li class="nav-item">
           <a class="nav-link serif" href="about">About</a>
         </li>
+        {% endif %}
+        {% if titleName == "signUp" %}
+        <li class="nav-item active">
+          <a class="nav-link serif" href="/register">Sign Up<span class="sr-only">(current)</span></a>
+        </li>
+        {% else %}
         <li class="nav-item">
           <a class="nav-link serif" href="/register">Sign Up</a>
         </li>
+        {% endif %}
+        
       </ul> 
       <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="text" placeholder="Search">
