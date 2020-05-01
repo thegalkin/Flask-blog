@@ -74,6 +74,31 @@ def AuthError():
 @app.route('/')
 @app.route('/index')
 def main():
+    f = open("dev_output.txt", "a")
+    connTexts = sqlite3.connect("texts.db")
+    g = connTexts.cursor()
+    conn = sqlite3.connect("userData.db")
+    c = conn.cursor()
+    
+    
+    about = c.execute("SELECT about FROM `userData` WHERE nick=?;", (userID,))
+    about = about.fetchall()
+    latestPosts = g.execute("SELECT * FROM `texts` WHERE ")
+    # Страшный костыль, который избавляет от еще большего ужаса из базы данных вида: [('[1,2]',)]
+    about = str(about)
+    about = about[about.find("'")+1:about.rfind("'")]
+    
+    imageLink = url_for('static', filename="images/users/{}.jpg".format(userID))
+    fullPostData = g.execute("SELECT * FROM `texts` WHERE author=?;", (userID,))
+    fullPostData = fullPostData.fetchall()
+    f.write(str(fullPostData[0]))
+    
+
+    conn.commit()   
+    conn.close()
+    connTexts.commit()
+    connTexts.close()
+    f.close()
     return render_template("index.html")
 
 #404

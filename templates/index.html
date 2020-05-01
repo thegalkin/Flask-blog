@@ -15,35 +15,55 @@
 <body>
  
     {% include 'header.html' %}
- 
+    <div class="row mb-5" >
+        <div class="col-md"></div>
         
-        <h1 class="text-muted">Recent Posts</h1>
-        <div class="row marketing">
-            <div class="col-lg-6">
-                <h4>Lorem ipsum</h4>
-                <p>Dconsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
- 
-                <h4>Lorem ipsum</h4>
-                <p>Dconsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <h4>Lorem ipsum</h4>
-                <p>Dconsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            
+            <div class = "center-block" >
+                {% block poster %}
+                {% for post in fullPostData %}
+                    <div class = "jumbotron">
+                        <div class = "row">
+                            <div class="col-md-1">
+                                <img src = {{imageLink}} alt="" class="round" width="50" height="50">
+                                    
+                                
+                            </div>
+                            <div class="col-md-5">
+                                <h6>{{ post[3] }}</h6>
+                                <p><i>{{ post[4] }} · {{(post|length / 1500)|round(0, "ceil")|int}} min read</i></p>
+                            
+                            </div>
+                            
+                        </div>
+                        <p></p>
+                        <p></p>
+                        <p></p>
+                        <div class = "row">
+                            <p><h3>{{ post[1] }}</h3></p>
+                        </div>
 
+                        <div class = "row">
+                            {% if post[2]|length > 83 %}
+                                <p class = "serif">{{ post[2][:83] }}...</p>
+                            {% else %}
+                                <p class = "serif">{{ post[2]}}...</p>
+                            {% endif %}
+                        </div>
+                        <div class = "row">
+                            <p class="lead">
+                                <a class="btn btn-primary btn-lg" href="/texts/{{post[0]}}" role="button">Learn more</a>
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% endblock %}
             </div>
- 
-            <div class="col-lg-6">
-                <h4>Lorem ipsum</h4>
-                <p>Dconsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <h4>Lorem ipsum</h4>
-                <p>Dconsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <h4>Lorem ipsum</h4>
-                <p>Dconsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </div>
-        </div>
         
-        <footer class="footer">
-            <p>&copy; Блог Никиты</p>
-        </footer>
- 
+        <div class="col-md"></div>
+        
+        
+        
     </div>
 </body>
  
