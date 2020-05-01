@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, json, flash, redirect, url_for, session
+from flask import Flask, render_template, request, json, flash, redirect, url_for, session, abort
 import sqlite3
 #from flask_admin import Admin
 #from flask_basicauth import BasicAuth
@@ -91,17 +91,19 @@ def page_not_found(error):
 #Тексты
 @app.route("/texts/<textIDinput>")
 def texts(textIDinput):
-    connTexts = sqlite3.connect("texts.db")
-    g = connTexts.cursor()
-    fullPostData = g.execute("SELECT * FROM `texts` WHERE ID=?;", (textIDinput,))
-    fullPostData = fullPostData.fetchall()
-    fullPostData = fullPostData[0]
-    textName = fullPostData[1]
-    textContents = fullPostData[2]
-    author = fullPostData[3]
-    date = fullPostData[4]
-    return render_template("texts.html", textIDinput=textIDinput, textName=textName, textContents=textContents, author=author, date=date)
-
+    try:
+        connTexts = sqlite3.connect("texts.db")
+        g = connTexts.cursor()
+        fullPostData = g.execute("SELECT * FROM `texts` WHERE ID=?;", (textIDinput,))
+        fullPostData = fullPostData.fetchall()
+        fullPostData = fullPostData[0]
+        textName = fullPostData[1]
+        textContents = fullPostData[2]
+        author = fullPostData[3]
+        date = fullPostData[4]
+        return render_template("texts.html", textIDinput=textIDinput, textName=textName, textContents=textContents, author=author, date=date)
+    except IndexError:
+        abort(404)
 #Текстовый редактор
 def editor(login):
     return render_template("editor.html")   
@@ -114,46 +116,34 @@ def about():
  #User Page
 @app.route('/id/<userID>')
 def user(userID):
-    f = open("dev_output.txt", "a")
-    connTexts = sqlite3.connect("texts.db")
-    g = connTexts.cursor()
-    conn = sqlite3.connect("userData.db")
-    c = conn.cursor()
-    temp = "images/users/{}.jpg".format(userID)
-    imageLink = url_for('static', filename=temp)
-    about = c.execute("SELECT about FROM `userData` WHERE nick=?;", (userID,))
-    #posts = c.execute("SELECT posts FROM `userData` WHERE nick=?;", (userID,))
-    #temp = ""
-    about = about.fetchall()
-    # Страшный костыль, который избавляет от еще большего ужаса из базы данных вида: [('[1,2]',)]
-    
-    about = str(about)
-    about = about[about.find("'")+1:about.rfind("'")]
-    
-    """while about.find(",") != -1:
-        about = about.replace(",", " OR ")"""
-    
-    """posts = posts.split(",")
-    posts = [int(posts[i]) for i in range(len(posts))]
-    f.write(str(posts) + " - posts" + "\n")"""
-    
-    #fullPostData = texts.query.filter_by(userID=author).first_or_404()
+    try:
+        f = open("dev_output.txt", "a")
+        connTexts = sqlite3.connect("texts.db")
+        g = connTexts.cursor()
+        conn = sqlite3.connect("userData.db")
+        c = conn.cursor()
+        temp = "images/users/{}.jpg".format(userID)
+        imageLink = url_for('static', filename=temp)
+        about = c.execute("SELECT about FROM `userData` WHERE nick=?;", (userID,))
+        
+        about = about.fetchall()
+        
+        about = str(about)
+        about = about[about.find("'")+1:about.rfind("'")]
+        
+        
+        fullPostData = g.execute("SELECT * FROM `texts` WHERE author=?;", (userID,))
+        fullPostData = fullPostData.fetchall()
+        f.write(str(fullPostData[0]))
 
-    """{% lilPost = 83 %}
-                        
-                            {% lilPost = post/100 * 10 %}"""
-    fullPostData = g.execute("SELECT * FROM `texts` WHERE author=?;", (userID,))
-    fullPostData = fullPostData.fetchall()
-    f.write(str(fullPostData[0]))
-    
-
-    conn.commit()   
-    conn.close()
-    connTexts.commit()
-    connTexts.close()
-    f.close()
-    return render_template("userPage.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about, fullPostData=fullPostData)
-
+        conn.commit()   
+        conn.close()
+        connTexts.commit()
+        connTexts.close()
+        f.close()
+        return render_template("userPage.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about, fullPostData=fullPostData)
+    except IndexError:
+        abort(404)
 
 
 
@@ -169,9 +159,21 @@ def register():
 @basic_auth.required
 def admin():
     return render_template("admin/index.html")"""
+"""while about.find(",") != -1:
+            about = about.replace(",", " OR ")"""
+        
+"""posts = posts.split(",")
+posts = [int(posts[i]) for i in range(len(posts))]
+f.write(str(posts) + " - posts" + "\n")"""
+        
+        #fullPostData = texts.query.filter_by(userID=author).first_or_404()
 
+"""{% lilPost = 83 %}
+{% lilPost = post/100 * 10 %}"""
 
-
+#posts = c.execute("SELECT posts FROM `userData` WHERE nick=?;", (userID,))
+        #temp = ""
+# Страшный костыль, который избавляет от еще большего ужаса из базы данных вида: [('[1,2]',)]
 
 
 
