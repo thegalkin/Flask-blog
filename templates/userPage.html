@@ -75,8 +75,12 @@
                     {% endblock %}
                 </div>
             
-            <div class="col-md">
-                <input class="bigButton" type="button" value="test"/>
+            <div class="col-md text-center">
+                {% if yourPage == True %}
+                <input class="btn btn-primary btn-lg bigButton serifh1" type="button" value="Post smth!"/>
+                {% endif %}
+                    
+                
             </div>
         </div>
     </body>

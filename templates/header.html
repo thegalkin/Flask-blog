@@ -47,7 +47,11 @@
           <a class="nav-link serif" href="/register">Sign Up</a>
         </li>
         {% endif %}
-        
+        {% if "user" in session %}
+          {% if session["user"] %}
+          
+          {% endif %}
+        {% endif %}
       </ul> 
       <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="text" placeholder="Search">

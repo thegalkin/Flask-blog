@@ -29,7 +29,8 @@ def login():
             f.close()
             hashedPassword = hashedPassword[0][0]
             if bcrypt.checkpw(password.encode("utf-8"), hashedPassword):
-                return render_template("editor.html", login=login)
+                session["user"] = login
+                return redirect("/id/{}".format(login))
             else:
                 return render_template("loginError.html")
         else:
@@ -117,7 +118,7 @@ def about():
 @app.route('/id/<userID>')
 def user(userID):
     try:
-        
+        yourPage = False
         f = open("dev_output.txt", "a")
         connTexts = sqlite3.connect("texts.db")
         g = connTexts.cursor()
@@ -141,15 +142,15 @@ def user(userID):
         if "user" in session:
             if session["user"] == userID:
                 yourPage = True
-            else:
-                yourPage = False
+            
                 
+
         conn.commit()   
         conn.close()
         connTexts.commit()
         connTexts.close()
         f.close()
-        return render_template("userPage.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about, fullPostData=fullPostData)
+        return render_template("userPage.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about, fullPostData=fullPostData, yourPage=yourPage)
     except IndexError:
         abort(404)
 
