@@ -15,5 +15,5 @@ User Page
 Скорее всего не работает:
 User profile editing,
 sessions,
-post adding
+post adding,
 Rating System 
