@@ -5,11 +5,11 @@
 Login,
 Register,
 Sql Database,
-Text Editor
-Posts db
-Post Page
-Posts Render
-Favicon
+Text Editor,
+Posts db,
+Post Page,
+Posts Render,
+Favicon,
 User Page
 
 Скорее всего не работает:
