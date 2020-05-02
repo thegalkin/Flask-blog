@@ -117,6 +117,7 @@ def about():
 @app.route('/id/<userID>')
 def user(userID):
     try:
+        
         f = open("dev_output.txt", "a")
         connTexts = sqlite3.connect("texts.db")
         g = connTexts.cursor()
@@ -136,6 +137,13 @@ def user(userID):
         fullPostData = fullPostData.fetchall()
         f.write(str(fullPostData[0]))
 
+        #if this if your page
+        if "user" in session:
+            if session["user"] == userID:
+                yourPage = True
+            else:
+                yourPage = False
+                
         conn.commit()   
         conn.close()
         connTexts.commit()
