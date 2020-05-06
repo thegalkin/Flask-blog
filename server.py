@@ -5,7 +5,7 @@ import sqlite3
 import bcrypt
 import time
 import random
-from datetime import datetime
+import datetime
 app = Flask(__name__)
 app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
 bootstrapTheme = """<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">"""
@@ -131,18 +131,20 @@ def editor():
             dateComputer = int(time.time())
             date = datetime.datetime.fromtimestamp(dateComputer).strftime("%d %b %Y %H:%M")
             rating = 0
-            author = session.get["user"]
-            postText = request.form['text']
+            author = session["user"]
+            textContent = request.form['text']
             textName = request.form['textName']
+            fullPostData = [(randID, textName, textContent, author, date, rating, dateComputer)]
             #make an ID
 
             
-            c.execute("INSERT INTO `texts` VALUES")
+            c.executemany("INSERT INTO `texts` VALUES(?,?,?,?,?,?,?)", fullPostData)
 
-
+            conn.commit()
+            conn.close()
             """with open("dev_output.txt", "a") as f:
                 f.write(postText + "\n")"""
-
+            return redirect("/texts/{}".format(randID))
 
 
 

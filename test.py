@@ -14,4 +14,4 @@ if 2 in g:
 dateComputer = int(time.time())
 date = datetime.datetime.fromtimestamp(dateComputer).strftime("%d %b %Y %H:%M")
 
-print(dateComputer)
+print(date)

@@ -6,6 +6,7 @@
 </head>
 <body>
   {% include 'header.html' %}
+    
     <div id="sample">
         <script type="text/javascript" src="http://js.nicedit.com/nicEdit-latest.js"></script> <script type="text/javascript">
       //<![CDATA[
@@ -13,7 +14,7 @@
         //]]>
         </script>
         <form method="POST" >
-          
+          <input name="textName">
           <textarea name="text" style="width: 700px; height: 400;">
           </textarea>
           <button id="btnPostIt" class="btn btn-lg btn-primary btn-block"  type="submit">Post it!</button>
