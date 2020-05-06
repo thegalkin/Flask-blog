@@ -4,6 +4,7 @@ import sqlite3
 #from flask_basicauth import BasicAuth
 import bcrypt
 import time
+import random
 app = Flask(__name__)
 app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
 bootstrapTheme = """<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">"""
@@ -120,9 +121,12 @@ def editor():
         if request.method == 'POST':
             conn = sqlite3.connect("texts.db")
             c = conn.cursor()
+            randID = random.randint(999999,999999999999)
+            c.execute("SELECT * FROM `texts` WHERE ID=?", (randID,))
+            
             postText = request.form['text']
             #make an ID
-            
+
             
             c.execute("INSERT INTO `texts` VALUES")
 
