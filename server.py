@@ -123,6 +123,7 @@ def editor():
             conn = sqlite3.connect("texts.db")
             c = conn.cursor()
             temp = 1
+            #make an ID
             while temp != 0:
                 randID = random.randint(999999,999999999999)
                 c.execute("SELECT * FROM `texts` WHERE ID=?", (randID,))
@@ -135,9 +136,7 @@ def editor():
             textContent = request.form['text']
             textName = request.form['textName']
             fullPostData = [(randID, textName, textContent, author, date, rating, dateComputer)]
-            #make an ID
 
-            
             c.executemany("INSERT INTO `texts` VALUES(?,?,?,?,?,?,?)", fullPostData)
 
             conn.commit()
@@ -201,7 +200,9 @@ def logOut():
     session.pop('icon', None)
     time.sleep(0.5)
     return redirect(url_for("login"))
-
+@app.route("/forgot")
+def forgot():
+    return render_template("forgot.html")
 
 #code trash
 """app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
