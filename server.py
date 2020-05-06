@@ -202,7 +202,9 @@ def logOut():
     return redirect(url_for("login"))
 @app.route("/forgot")
 def forgot():
-    return render_template("forgot.html")
+    if not session.get["user"]:
+        
+        return render_template("forgot.html")
 
 #code trash
 """app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
