@@ -114,9 +114,25 @@ def texts(textIDinput):
     except IndexError:
         abort(404)
 #Текстовый редактор
-@app.route("/editor")
+@app.route("/editor", methods=('POST', 'GET'))
 def editor():
     if session.get("user"):
+        if request.method == 'POST':
+            conn = sqlite3.connect("texts.db")
+            c = conn.cursor()
+            postText = request.form['text']
+            #make an ID
+            
+            
+            c.execute("INSERT INTO `texts` VALUES")
+
+
+            """with open("dev_output.txt", "a") as f:
+                f.write(postText + "\n")"""
+
+
+
+
         return render_template("editor.html")   
     else:
         return redirect(url_for("login"))
