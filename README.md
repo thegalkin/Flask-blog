@@ -10,10 +10,10 @@ Posts db,
 Post Page,
 Posts Render,
 Favicon,
-User Page
+User Page,
+sessions,
+post adding
 
 Скорее всего не работает:
 User profile editing,
-sessions,
-post adding,
 Rating System 
