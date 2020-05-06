@@ -5,6 +5,7 @@ import sqlite3
 import bcrypt
 import time
 import random
+from datetime import datetime
 app = Flask(__name__)
 app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
 bootstrapTheme = """<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">"""
@@ -121,10 +122,18 @@ def editor():
         if request.method == 'POST':
             conn = sqlite3.connect("texts.db")
             c = conn.cursor()
-            randID = random.randint(999999,999999999999)
-            c.execute("SELECT * FROM `texts` WHERE ID=?", (randID,))
+            temp = 1
+            while temp != 0:
+                randID = random.randint(999999,999999999999)
+                c.execute("SELECT * FROM `texts` WHERE ID=?", (randID,))
+                temp = len(c.fetchall())
             
+            dateComputer = int(time.time())
+            date = datetime.datetime.fromtimestamp(dateComputer).strftime("%d %b %Y %H:%M")
+            rating = 0
+            author = session.get["user"]
             postText = request.form['text']
+            textName = request.form['textName']
             #make an ID
 
             
