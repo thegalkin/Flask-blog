@@ -114,9 +114,12 @@ def texts(textIDinput):
     except IndexError:
         abort(404)
 #Текстовый редактор
-def editor(login):
-    return render_template("editor.html")   
-
+@app.route("/editor")
+def editor():
+    if session.get("user"):
+        return render_template("editor.html")   
+    else:
+        return redirect(url_for("login"))
 #О создателях
 @app.route('/about')
 def about():

@@ -22,11 +22,11 @@
         {% endif %}
         {% if titleName == "signIn" %}
         <li class="nav-item active">
-          <a class="nav-link serif" href="/login">Post smth.<span class="sr-only">(current)</span></a>
+          <a class="nav-link serif" href="/editor">Post smth.<span class="sr-only">(current)</span></a>
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link serif" href="/login">Post smth.</a>
+          <a class="nav-link serif" href="/editor">Post smth.</a>
         </li>
         {% endif %}
         {% if titleName == "about" %}
@@ -49,19 +49,32 @@
         {% endif %}
         
       </ul> 
-      <form class="form-inline my-2 my-lg-0">
+      
         {% if "user" in session %}
         <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img src = {{ session[ "icon" ] }} alt="" class="round" width="50" height="50">
+            <img src = {{ session[ "icon" ] }} alt="" class="round" width="40" height="40">
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" href="id/{{ session[ "user" ] }}">My page</a>
+            <a class="dropdown-item" href="/editor">Write a post</a>
+            <a class="dropdown-item" href="/logout">logout</a>
           </div>
         </div>
-        {% endif %}
-      </form>
+        {% else %}
+        <div class="d-flex flex-row-reverse">
+          <ul class="navbar-nav p-1">
+            {% if titleName == "login" %}
+              <li class="nav-item active"></li>
+                <a class="nav-link serif" href="/login">Sign In <span class="sr-only">(current)</span></a>
+              </li>
+            {% else %}
+            <li class="nav-item ">
+              <a class="nav-link serif " href="/login">Sign In <span class="sr-only">(current)</span></a>
+            </li>
+            {% endif %}
+          </ul>
+          {% endif %}
+        </div>
     </div>
   </nav>      
