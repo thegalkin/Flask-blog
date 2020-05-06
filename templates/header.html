@@ -47,10 +47,13 @@
           <a class="nav-link serif" href="/register">Sign Up</a>
         </li>
         {% endif %}
+        
+      </ul> 
+      <form class="form-inline my-2 my-lg-0">
         {% if "user" in session %}
         <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Dropdown button
+            <img src = {{imageLink}} alt="" class="round" width="100" height="100">
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" href="#">Action</a>
@@ -59,10 +62,6 @@
           </div>
         </div>
         {% endif %}
-      </ul> 
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search">
-        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
       </form>
     </div>
   </nav>      

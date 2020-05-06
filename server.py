@@ -19,9 +19,13 @@ def login():
         #подключение бд
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
+        """connUserData = sqlite3.connect("userData.db")
+        g = connUserData.cursor()"""
         c.execute("SELECT password FROM `users` WHERE login=?;", (login,))
         #f.write("{}\n".format(c))
         hashedPassword = c.fetchall()
+        """g.execute("SELECT image FROM `userData` WHERE nick=?", (login,))
+        userIcon = g.fetchone()"""
         if len(hashedPassword) != 0:
             #хеш проверка и итог
             
@@ -30,6 +34,7 @@ def login():
             hashedPassword = hashedPassword[0][0]
             if bcrypt.checkpw(password.encode("utf-8"), hashedPassword):
                 session["user"] = login
+                """session["icon"] = """
                 return redirect("/id/{}".format(login))
             else:
                 return render_template("loginError.html")
