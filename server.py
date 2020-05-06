@@ -3,6 +3,7 @@ import sqlite3
 #from flask_admin import Admin
 #from flask_basicauth import BasicAuth
 import bcrypt
+import time
 app = Flask(__name__)
 app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
 bootstrapTheme = """<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">"""
@@ -34,7 +35,9 @@ def login():
             hashedPassword = hashedPassword[0][0]
             if bcrypt.checkpw(password.encode("utf-8"), hashedPassword):
                 session["user"] = login
-                """session["icon"] = """
+                session["icon"] = url_for('static', filename="images/users/{}.jpg".format(login))
+                
+                
                 return redirect("/id/{}".format(login))
             else:
                 return render_template("loginError.html")
@@ -158,9 +161,12 @@ def user(userID):
         return render_template("userPage.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about, fullPostData=fullPostData, yourPage=yourPage)
     except IndexError:
         abort(404)
-
-
-
+@app.route("/logout")
+def logOut():
+    session.pop('user', None)
+    session.pop('icon', None)
+    time.sleep(0.5)
+    return redirect(url_for("login"))
 
 
 #code trash
