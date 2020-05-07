@@ -231,7 +231,9 @@ f.write(str(posts) + " - posts" + "\n")"""
 #posts = c.execute("SELECT posts FROM `userData` WHERE nick=?;", (userID,))
         #temp = ""
 # Страшный костыль, который избавляет от еще большего ужаса из базы данных вида: [('[1,2]',)]
-
+#dfffff
+#dfdfd
+#gfgfgfg
 
 
 
