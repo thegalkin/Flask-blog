@@ -1,4 +1,4 @@
-import sys
+"""import sys
 import sqlite3
 import random
 import datetime
@@ -14,4 +14,11 @@ if 2 in g:
 dateComputer = int(time.time())
 date = datetime.datetime.fromtimestamp(dateComputer).strftime("%d %b %Y %H:%M")
 
-print(date)
+print(date)"""
+
+
+
+
+
+
+print(res)
