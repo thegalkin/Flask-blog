@@ -206,7 +206,7 @@ def logOut():
 def forgot():
     if not session.get["user"]:
         if request.method = "POST":
-            
+            login = request.form["inputLogin"]
         return render_template("forgot.html")
     else: 
         abort(404)
