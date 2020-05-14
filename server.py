@@ -205,8 +205,13 @@ def logOut():
 @app.route("/forgot", methods=('POST', 'GET'))
 def forgot():
     if not session.get["user"]:
-        if request.method = "POST":
+        if request.method == "POST":
             login = request.form["inputLogin"]
+            conn = sqlite3.connect("userData.db")
+            c = conn.cursor()
+            c.execute("SELECT email FROM `userData` WHERE nick=?", (login,))
+            c.fetchone()
+            
         return render_template("forgot.html")
     else: 
         abort(404)
