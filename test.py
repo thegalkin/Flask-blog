@@ -1,24 +1,5 @@
-"""import sys
-import sqlite3
-import random
-import datetime
-import time
+textContent = "Текст а вот и <script>delete whole site!!!!!</script>]"
 
-"""conn = sqlite3.connect("texts.db")
-c = conn.cursor()
-c.execute("SELECT ID FROM `texts`")
-g = c.fetchall()
-print(g)
-if 2 in g:
-    print(True)"""
-dateComputer = int(time.time())
-date = datetime.datetime.fromtimestamp(dateComputer).strftime("%d %b %Y %H:%M")
-
-print(date)"""
-
-
-
-
-
-
-print(res)
+for i in r"^%&<>\[\]{}]/":
+    textContent = textContent.replace(i, "", -1)
+print(textContent)    

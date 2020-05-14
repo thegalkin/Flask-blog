@@ -134,6 +134,8 @@ def editor():
             rating = 0
             author = session["user"]
             textContent = request.form['text']
+            for i in r"^%&<>\[\]{}]/": # Вычищаем текст от "вирусов"
+                textContent = textContent.replace(i, "", -1)
             textName = request.form['textName']
             fullPostData = [(randID, textName, textContent, author, date, rating, dateComputer)]
 
