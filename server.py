@@ -202,11 +202,15 @@ def logOut():
     session.pop('icon', None)
     time.sleep(0.5)
     return redirect(url_for("login"))
-@app.route("/forgot")
+@app.route("/forgot", methods=('POST', 'GET'))
 def forgot():
     if not session.get["user"]:
-        
+        if request.method = "POST":
+            
         return render_template("forgot.html")
+    else: 
+        abort(404)
+
 
 #code trash
 """app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
