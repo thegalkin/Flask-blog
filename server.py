@@ -242,12 +242,13 @@ def forget(localHash):
     data = jwt.decode(localHash, app.config['SECRET_KEY'],
                       algorithms=['HS512'])['reset_password']
     if request.method == "POST":
-        login = request.form["inputPassword"]
+        password = request.form["inputPassword"]
         conn = sqlite3.connect("users.db")
         c = conn.cursor()
-        c.execute("SELECT password FROM `users` WHERE login=?", (login,))
-        email = c.fetchone()
-        email = email[0]
+        newPass = bcrypt.hashpw(password, bcrypt.gensalt())
+        temp = [newPass, login]
+        c.execute("UPDATE `users` SET password=? WHERE login=?", temp)
+        
 
     return render_template("forget.html")
 #code trash

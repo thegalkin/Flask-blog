@@ -20,7 +20,7 @@
         {% else %}
         
         {% endif %}
-        {% if titleName == "signIn" %}
+        {% if titleName == "editor" or titleName == "login" %}
         <li class="nav-item active">
           <a class="nav-link serif" href="/editor">Post smth.<span class="sr-only">(current)</span></a>
         </li>
@@ -38,16 +38,17 @@
           <a class="nav-link serif" href="about">About</a>
         </li>
         {% endif %}
-        {% if titleName == "signUp" %}
-        <li class="nav-item active">
-          <a class="nav-link serif" href="/register">Sign Up<span class="sr-only">(current)</span></a>
-        </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link serif" href="/register">Sign Up</a>
-        </li>
+        {% if not "user" in session %}
+          {% if titleName == "signUp" %}
+          <li class="nav-item active">
+            <a class="nav-link serif" href="/register">Sign Up<span class="sr-only">(current)</span></a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link serif" href="/register">Sign Up</a>
+          </li>
+          {% endif %}
         {% endif %}
-        
       </ul> 
       
         {% if "user" in session %}
