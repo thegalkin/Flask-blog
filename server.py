@@ -12,7 +12,7 @@ from email.message import EmailMessage
 app = Flask(__name__)
 app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
 bootstrapTheme = """<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">"""
-domain = ""
+domain = "domasdadsasdasdain.ru"
 #Логин
 @app.route("/login", methods=('POST', 'GET'))
 def login():
@@ -206,22 +206,35 @@ def logOut():
     return redirect(url_for("login"))
 @app.route("/forgot", methods=('POST', 'GET'))
 def forgot():
-    if not session.get["user"]:
+    if not session.get("user"):
         if request.method == "POST":
             login = request.form["inputLogin"]
             conn = sqlite3.connect("userData.db")
             c = conn.cursor()
             c.execute("SELECT email FROM `userData` WHERE nick=?", (login,))
             email = c.fetchone()
+            email = email[0]
+            with open("dev_output.txt", "a") as f:
+                f.write(str(email))
             if email != None:
+                localHash = jwt.encode(
+                                {'reset_password': login, 'exp': time() + 600},
+                                app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+
+                link = url_for("/forget/{}".format(localHash))
                 msg = EmailMessage()
-                msg.set_content()                       
+                msg.set_content(link)
+                msg['Subject'] = "Password reset"
+                msg['From'] = "password@{}".format(domain)
+                msg['To'] = email              
             
         return render_template("forgot.html")
     else: 
         abort(404)
 
-
+@app.route("/forget/<localHash>")
+def forget(localHash):
+    return 
 #code trash
 """app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 admin = Admin(app, name='microblog', template_mode='bootstrap3')"""
