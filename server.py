@@ -263,6 +263,28 @@ def forget(localHash):
         redirect(url_for("login"))
 
     return render_template("forget.html")
+
+@app.route("/pagecorrect", methods=("POST", "GET"))
+def pagecorrect():
+    if session.get("user"):
+        user = session.get("user")
+        conn = sqlite3.connect("userData.db")
+        c = conn.cursor()
+        conn = sqlite3.connect("userData.db")
+        c = conn.cursor()
+        temp = "images/users/{}.jpg".format(userID)
+        imageLink = url_for('static', filename=temp)
+        about = c.execute("SELECT about FROM `userData` WHERE nick=?;", (userID,))
+        
+        about = about.fetchall()
+        
+        about = str(about)
+        about = about[about.find("'")+1:about.rfind("'")]
+
+
+
+
+
 #code trash
 """app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 admin = Admin(app, name='microblog', template_mode='bootstrap3')"""
