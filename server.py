@@ -215,20 +215,21 @@ def forgot():
             c.execute("SELECT email FROM `userData` WHERE nick=?", (login,))
             email = c.fetchone()
             email = email[0]
-            with open("dev_output.txt", "a") as f:
-                f.write(str(email))
+            f = open("dev_output.txt", "a")
+            f.write(str(email))
             if email != None:
                 localHash = jwt.encode(
                                 {'reset_password': login, 'exp': time() + 600},
                                 app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
 
+                f.write(str(localHash))
                 link = url_for("/forget/{}".format(localHash))
                 msg = EmailMessage()
                 msg.set_content(link)
                 msg['Subject'] = "Password reset"
                 msg['From'] = "password@{}".format(domain)
                 msg['To'] = email              
-            
+
         return render_template("forgot.html")
     else: 
         abort(404)
