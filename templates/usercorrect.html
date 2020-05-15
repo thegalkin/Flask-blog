@@ -4,16 +4,7 @@
     {% set titleName = "usercorrect"  %}
  
     {% include '/styles.html' %}
-    <script>
-        collect: function(){
-
-            var newName = document.getElementById('newN').innerHTML;
-            var newAbout = document.getElementById('newA').innerHTML;
-            return newName, newAbout;
-        }
-        
-        
-    </script>
+    
     <style>
         .profile_editor_buttons{
             height: 37px;
@@ -32,20 +23,13 @@
     
     <div class = "col-6" >
         <h1 class="serifh1" contenteditable="true">Edit your profile</h1>
-        <form method="POST" action="usercorrect.html">
-            <div class="col"></div>
-            <h2 class="serifh2"><input id="nick" >{{nick}}</h2>
-            
-
-
-
-        </form>
-        <form action="/usercorrect" method="POST" onsubmit="">
-            <div id="newN" contenteditable="true">{{nick}}<br /></div>
-            <textarea name="content" style="display:none;" />
-            <div id="newA" contenteditable="true">{{about}}<br /></div>
-            <textarea name="content" style="display:none;" />
-            <input type="submit" />
+        
+        <form action="/usercorrect" method="POST" onsubmit="collect">
+            <div id="newNameDef" contenteditable="true">{{nick}}<br /></div>
+            <textarea name="newName" style="display:none;" />
+            <div id="newAboutDef" contenteditable="true">{{about}}<br /></div>
+            <textarea name="newAbout" style="display:none;" />
+            <button id="btnPostIt" class="row btn btn-lg btn-primary btn-block profile_editor_buttons"  type="submit" style="width: 700px;">Save</button>
         </form>
     </div>
     

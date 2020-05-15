@@ -9,15 +9,23 @@ import datetime
 import smtplib
 import jwt
 from email.message import EmailMessage
+from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
 bootstrapTheme = """<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">"""
 domain = "domasdadsasdasdain.ru"
 domain = "localhost"
+ALLOWED_EXTENSIONS = {'jpg'}
 def cleaner(text):
     for i in r"^%&<>\[\]{}]/": # Вычищаем текст от "вирусов"
                 text = text.replace(i, "", -1)
     return text
+def allowed_file(filename):
+    if '.' in filename:
+        if filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS:
+            return True
+        else:
+            return False
 #Логин
 @app.route("/login", methods=('POST', 'GET'))
 def login():
@@ -280,9 +288,13 @@ def usercorrect():
         
         about = str(about)
         about = about[about.find("'")+1:about.rfind("'")]
+        if request.method == "POST":
+            newAbout = request.form["newAbout"]
+            newImage = request.form["newImage"]
+            if newAbout != about:
+                c.execute("UPDATE `userData` SET about=? WHERE nick=?", [newAbout, userID])
 
 
-        
         return render_template("usercorrect.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about)
 
 
