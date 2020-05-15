@@ -14,6 +14,7 @@ app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
 bootstrapTheme = """<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">"""
 domain = "domasdadsasdasdain.ru"
 domain = "localhost"
+def antiMalware():
 #Логин
 @app.route("/login", methods=('POST', 'GET'))
 def login():
@@ -137,8 +138,7 @@ def editor():
             rating = 0
             author = session["user"]
             textContent = request.form['text']
-            for i in r"^%&<>\[\]{}]/": # Вычищаем текст от "вирусов"
-                textContent = textContent.replace(i, "", -1)
+            
             textName = request.form['textName']
             fullPostData = [(randID, textName, textContent, author, date, rating, dateComputer)]
 
