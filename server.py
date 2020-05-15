@@ -220,23 +220,36 @@ def forgot():
             if email != None:
                 localHash = jwt.encode(
                                 {'reset_password': login, 'exp': time() + 600},
-                                app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+                                app.config['SECRET_KEY'], algorithm='HS512').decode('utf-8')
 
                 f.write(str(localHash))
                 link = url_for("/forget/{}".format(localHash))
                 msg = EmailMessage()
                 msg.set_content(link)
                 msg['Subject'] = "Password reset"
-                msg['From'] = "password@{}".format(domain)
+                msg['From'] = "gozammer@gmail.com" #"password@{}".format(domain)
                 msg['To'] = email              
+                s = smtplib.SMTP('localhost')
+                s.send_message(msg)
+                s.quit()
 
         return render_template("forgot.html")
     else: 
         abort(404)
 
-@app.route("/forget/<localHash>")
+@app.route("/forget/<localHash>", methods=('POST', 'GET'))
 def forget(localHash):
-    return 
+    data = jwt.decode(localHash, app.config['SECRET_KEY'],
+                      algorithms=['HS512'])['reset_password']
+    if request.method == "POST":
+        login = request.form["inputPassword"]
+        conn = sqlite3.connect("users.db")
+        c = conn.cursor()
+        c.execute("SELECT password FROM `users` WHERE login=?", (login,))
+        email = c.fetchone()
+        email = email[0]
+
+    return render_template("forget.html")
 #code trash
 """app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 admin = Admin(app, name='microblog', template_mode='bootstrap3')"""
