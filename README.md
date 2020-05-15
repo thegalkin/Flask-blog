@@ -16,4 +16,4 @@ post adding
 
 Скорее всего не работает:
 User profile editing,
-Rating System 
+Forget
