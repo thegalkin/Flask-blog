@@ -6,11 +6,13 @@ import bcrypt
 import time
 import random
 import datetime
+import smtplib
+import jwt
+from email.message import EmailMessage
 app = Flask(__name__)
 app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
 bootstrapTheme = """<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">"""
-nick = ""
-
+domain = ""
 #Логин
 @app.route("/login", methods=('POST', 'GET'))
 def login():
@@ -212,7 +214,8 @@ def forgot():
             c.execute("SELECT email FROM `userData` WHERE nick=?", (login,))
             email = c.fetchone()
             if email != None:
-                                
+                msg = EmailMessage()
+                msg.set_content()                       
             
         return render_template("forgot.html")
     else: 
