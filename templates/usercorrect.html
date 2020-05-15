@@ -4,6 +4,27 @@
     {% set titleName = "usercorrect"  %}
  
     {% include '/styles.html' %}
+    <script>
+        collect: function(){
+
+            var newName = document.getElementById('newN').innerHTML;
+            var newAbout = document.getElementById('newA').innerHTML;
+            return newName, newAbout;
+        }
+        
+        
+    </script>
+    <style>
+        .profile_editor_buttons{
+            height: 37px;
+            line-height: 37px;
+            padding: 18px;
+            border-color: #029e74;
+            color: #018f69;
+        }
+        
+
+    </style>
 </head>
 <body>
 {% include 'header.html' %}
@@ -19,8 +40,10 @@
 
 
         </form>
-        <form action="/usercorrect" method="POST" onsubmit="this.content.value=document.getElementById('text_box').innerHTML;">
-            <div id="text_box" contenteditable="true"><br /></div>
+        <form action="/usercorrect" method="POST" onsubmit="">
+            <div id="newN" contenteditable="true">{{nick}}<br /></div>
+            <textarea name="content" style="display:none;" />
+            <div id="newA" contenteditable="true">{{about}}<br /></div>
             <textarea name="content" style="display:none;" />
             <input type="submit" />
         </form>
