@@ -7,17 +7,25 @@
 </head>
 <body>
 {% include 'header.html' %}
-<div class="row">
-    <div class = "col-md"></div>
-    <div class = "col-md" >
+<div class="row justify-content-center">
+    
+    <div class = "col-6" >
         <h1 class="serifh1" contenteditable="true">Edit your profile</h1>
-        <form class="usercorrect" method="POST" action="usercorrect.html">
-            <input id="nick" placeholder="{{}}"
+        <form method="POST" action="usercorrect.html">
+            <div class="col"></div>
+            <h2 class="serifh2"><input id="nick" >{{nick}}</h2>
+            
+
 
 
         </form>
+        <form action="/usercorrect" method="POST" onsubmit="this.content.value=document.getElementById('text_box').innerHTML;">
+            <div id="text_box" contenteditable="true"><br /></div>
+            <textarea name="content" style="display:none;" />
+            <input type="submit" />
+        </form>
     </div>
-    <div class = "col-md"></div>
+    
 </div>
 
 
