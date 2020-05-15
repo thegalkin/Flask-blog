@@ -14,7 +14,10 @@ app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
 bootstrapTheme = """<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">"""
 domain = "domasdadsasdasdain.ru"
 domain = "localhost"
-def antiMalware():
+def cleaner(text):
+    for i in r"^%&<>\[\]{}]/": # Вычищаем текст от "вирусов"
+                text = text.replace(i, "", -1)
+    return text
 #Логин
 @app.route("/login", methods=('POST', 'GET'))
 def login():
@@ -22,7 +25,9 @@ def login():
     if request.method == 'POST':
         #подключение форм
         login = request.form['inputLogin']
+        login = cleaner(login)
         password = request.form['inputPassword']
+        password = cleaner(password)
         #подключение бд
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
@@ -58,8 +63,11 @@ def regForm():
     
     if request.method == 'POST':
         login = request.form['inputLogin']
+        login = cleaner(login)
         #f.write("email is:{}".format(email))
-        password = request.form['inputPassword'].encode('UTF-8')
+        password = request.form['inputPassword']
+        password = cleaner(password)
+        password = password.encode('UTF-8')
         #f.write("password is:{}".format(password))
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
@@ -138,8 +146,9 @@ def editor():
             rating = 0
             author = session["user"]
             textContent = request.form['text']
-            
+            textContent = cleaner(textContent)
             textName = request.form['textName']
+            textName = cleaner(textName)
             fullPostData = [(randID, textName, textContent, author, date, rating, dateComputer)]
 
             c.executemany("INSERT INTO `texts` VALUES(?,?,?,?,?,?,?)", fullPostData)
@@ -210,6 +219,7 @@ def forgot():
     if not session.get("user"):
         if request.method == "POST":
             login = request.form["inputLogin"]
+            login = cleaner(login)
             conn = sqlite3.connect("userData.db")
             c = conn.cursor()
             c.execute("SELECT email FROM `userData` WHERE nick=?", (login,))
@@ -243,6 +253,8 @@ def forget(localHash):
                       algorithms=['HS512'])['reset_password']
     if request.method == "POST":
         password = request.form["inputPassword"]
+        password = cleaner(password)
+        password = password.encode('UTF-8')
         conn = sqlite3.connect("users.db")
         c = conn.cursor()
         newPass = bcrypt.hashpw(password, bcrypt.gensalt())
