@@ -8,14 +8,13 @@ import random
 import datetime
 import smtplib
 import jwt
+import os
 from email.message import EmailMessage
-from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
 bootstrapTheme = """<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">"""
 domain = "domasdadsasdasdain.ru"
 domain = "localhost"
-ALLOWED_EXTENSIONS = {'jpg'}
 def cleaner(text):
     for i in r"^%&<>\[\]{}]/": # Вычищаем текст от "вирусов"
                 text = text.replace(i, "", -1)
@@ -289,11 +288,21 @@ def usercorrect():
         about = str(about)
         about = about[about.find("'")+1:about.rfind("'")]
         if request.method == "POST":
-            newAbout = request.form["newAbout"]
-            newImage = request.form["newImage"]
-            if newAbout != about:
-                c.execute("UPDATE `userData` SET about=? WHERE nick=?", [newAbout, userID])
+            if request.form.get("newAbout"):
+                newAbout = request.form["newAbout"]
+                if newAbout != about:
+                    c.execute("UPDATE `userData` SET about=? WHERE nick=?", [newAbout, userID])
 
+            if request.form.get("newImage"):
+                if 'newImage' not in request.files:
+                    flash('No file part')
+                    return redirect(request.url)
+                file = request.files['newImage']
+                if file and file.filename.endswith(".jpg"):
+                    filename = userID + ".jpg"
+                    os.chdir("")
+                    file.save(os.path.join("static/images/users", filename))
+                    return redirect(url_for("/id/{}".format(userID))
 
         return render_template("usercorrect.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about)
 
