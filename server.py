@@ -260,7 +260,7 @@ def forget(localHash):
         newPass = bcrypt.hashpw(password, bcrypt.gensalt())
         temp = [newPass, login]
         c.execute("UPDATE `users` SET password=? WHERE login=?", temp)
-        
+        redirect(url_for("login"))
 
     return render_template("forget.html")
 #code trash
