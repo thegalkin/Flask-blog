@@ -264,10 +264,10 @@ def forget(localHash):
 
     return render_template("forget.html")
 
-@app.route("/pagecorrect", methods=("POST", "GET"))
-def pagecorrect():
+@app.route("/usercorrect", methods=("POST", "GET"))
+def usercorrect():
     if session.get("user"):
-        user = session.get("user")
+        userID = session.get("user")
         conn = sqlite3.connect("userData.db")
         c = conn.cursor()
         conn = sqlite3.connect("userData.db")
@@ -281,6 +281,9 @@ def pagecorrect():
         about = str(about)
         about = about[about.find("'")+1:about.rfind("'")]
 
+
+        
+        return render_template("usercorrect.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about)
 
 
 
