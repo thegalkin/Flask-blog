@@ -210,7 +210,9 @@ def forgot():
             conn = sqlite3.connect("userData.db")
             c = conn.cursor()
             c.execute("SELECT email FROM `userData` WHERE nick=?", (login,))
-            c.fetchone()
+            email = c.fetchone()
+            if email != None:
+                                
             
         return render_template("forgot.html")
     else: 
