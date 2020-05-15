@@ -48,8 +48,6 @@ def login():
         if len(hashedPassword) != 0:
             #хеш проверка и итог
             
-            f.write("{}\n".format(hashedPassword[0][0]))
-            f.close()
             hashedPassword = hashedPassword[0][0]
             if bcrypt.checkpw(password.encode("utf-8"), hashedPassword):
                 session["user"] = login
@@ -198,7 +196,6 @@ def user(userID):
         
         fullPostData = g.execute("SELECT * FROM `texts` WHERE author=?;", (userID,))
         fullPostData = fullPostData.fetchall()
-        f.write(str(fullPostData[0]))
 
         #if this if your page
         if "user" in session:
@@ -233,13 +230,11 @@ def forgot():
             email = c.fetchone()
             email = email[0]
             f = open("dev_output.txt", "a")
-            f.write(str(email))
             if email != None:
                 localHash = jwt.encode(
                                 {'reset_password': login, 'exp': time() + 600},
                                 app.config['SECRET_KEY'], algorithm='HS512').decode('utf-8')
 
-                f.write(str(localHash))
                 link = url_for("/forget/{}".format(localHash))
                 msg = EmailMessage()
                 msg.set_content(link)
@@ -277,8 +272,7 @@ def usercorrect():
         userID = session.get("user")
         conn = sqlite3.connect("userData.db")
         c = conn.cursor()
-        conn = sqlite3.connect("userData.db")
-        c = conn.cursor()
+        f = open("dev_output.txt", "a")
         temp = "images/users/{}.jpg".format(userID)
         imageLink = url_for('static', filename=temp)
         about = c.execute("SELECT about FROM `userData` WHERE nick=?;", (userID,))
@@ -287,22 +281,28 @@ def usercorrect():
         
         about = str(about)
         about = about[about.find("'")+1:about.rfind("'")]
+        
         if request.method == "POST":
-            if request.form.get("newAbout"):
+            f.write(request.form["newAbout"])
+            if request.form["newAbout"]:
+                f.write('something3')
                 newAbout = request.form["newAbout"]
                 if newAbout != about:
-                    c.execute("UPDATE `userData` SET about=? WHERE nick=?", [newAbout, userID])
+                    f.write("that's a new about: {}".format(about))
+                    #c.execute("UPDATE `userData` SET about=? WHERE nick=?", [newAbout, userID])
 
-            if request.form.get("newImage"):
+            if request.files.get("newImage"):
                 if 'newImage' not in request.files:
-                    flash('No file part')
-                    return redirect(request.url)
+                    flash('No file part, try again')
+                    
                 file = request.files['newImage']
                 if file and file.filename.endswith(".jpg"):
                     filename = userID + ".jpg"
-                    os.chdir("")
-                    file.save(os.path.join("static/images/users", filename))
-                    return redirect(url_for("/id/{}".format(userID))
+                    os.chdir("/static/images/users")
+                    os.remove("{}.jpg".format(userID))
+                    file.save(os.path.join("/static/images/users", filename))
+                    f.write("image seems to be edited")
+                    return redirect(url_for("/id/{}".format(userID)))
 
         return render_template("usercorrect.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about)
 
