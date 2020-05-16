@@ -1,7 +1,15 @@
-from flask import (Flask, render_template, request, json, flash, redirect, url_for, session, abort)
+from flask import (Flask, render_template, request, json,
+                   flash, redirect, url_for, session, abort)
 from email.message import EmailMessage
-import bcrypt, time, random, datetime, smtplib, jwt, os, sqlite3, shutil
-
+import bcrypt
+import time
+import random
+import datetime
+import smtplib
+import jwt
+import os
+import sqlite3
+import shutil
 
 
 app = Flask(__name__)
@@ -11,34 +19,36 @@ domain = "domasdadsasdasdain.ru"
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 # Вычищаем текст от "вирусов"
+
+
 def cleaner(text):
-    for i in r"^%&<>\[\]{}]/": 
-                text = text.replace(i, "", -1)
+    for i in r"^%&<>\[\]{}]/":
+        text = text.replace(i, "", -1)
     return text
 
-#Логин
+# Логин
 @app.route("/login", methods=('POST', 'GET'))
 def login():
     if request.method == 'POST':
-        #подключение форм
+        # подключение форм
         login = request.form['inputLogin']
         login = cleaner(login)
         password = request.form['inputPassword']
         password = cleaner(password)
-        #подключение бд
+        # подключение бд
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
         c.execute("SELECT password FROM `users` WHERE login=?;", (login,))
         hashedPassword = c.fetchall()
         if len(hashedPassword) != 0:
-            #хеш проверка и итог
-            
+            # хеш проверка и итог
+
             hashedPassword = hashedPassword[0][0]
             if bcrypt.checkpw(password.encode("utf-8"), hashedPassword):
                 session["user"] = login
-                session["icon"] = url_for('static', filename="images/users/{}.jpg".format(login))
-                
-                
+                session["icon"] = url_for(
+                    'static', filename="images/users/{}.jpg".format(login))
+
                 return redirect("/id/{}".format(login))
             else:
                 return render_template("loginError.html")
@@ -47,10 +57,10 @@ def login():
 
     return render_template("login.html")
 
-#Регистрация
+# Регистрация
 @app.route('/register', methods=('POST', 'GET'))
 def regForm():
-    
+
     if request.method == 'POST':
         login = request.form['inputLogin']
         login = cleaner(login)
@@ -63,7 +73,7 @@ def regForm():
         x = c.fetchall()
         if len(x) > 0:
             registerStatus = False
-            
+
             return redirect(url_for("AuthError"))
         else:
             reger = [login, bcrypt.hashpw(password, bcrypt.gensalt())]
@@ -73,46 +83,50 @@ def regForm():
             connData = sqlite3.connect("userData.db")
             g = connData.cursor()
             reger2 = [login, "Hi everyone, this is me"]
-            g.execute("INSERT INTO `userData` VALUES(?,NULL,?,NULL,NULL);", reger2)
+            g.execute(
+                "INSERT INTO `userData` VALUES(?,NULL,?,NULL,NULL);", reger2)
             connData.commit()
             connData.close()
             if os.path.exists("static/images/placeholder.jpg"):
-                
-                shutil.copy("static/images/placeholder.jpg", "static/images/users/{}.jpg".format(login))
-            
+
+                shutil.copy("static/images/placeholder.jpg",
+                            "static/images/users/{}.jpg".format(login))
+
             return redirect(url_for("login"))
     return render_template("register.html")
 
-    
-#Ошибка аутентификации    
+
+# Ошибка аутентификации
 @app.route("/AuthError")
 def AuthError():
     return render_template("AuthError.html")
 
-#Главная
+# Главная
 @app.route('/')
 @app.route('/index')
 def main():
     connTexts = sqlite3.connect("texts.db")
     g = connTexts.cursor()
-    latestPosts = g.execute("SELECT * FROM `texts` ORDER BY dateComputer ASC LIMIT 5;")
+    latestPosts = g.execute(
+        "SELECT * FROM `texts` ORDER BY dateComputer ASC LIMIT 5;")
     latestPosts = latestPosts.fetchall()
     connTexts.commit()
     connTexts.close()
     return render_template("index.html", fullPostData=latestPosts)
 
-#404
+# 404
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html'), 404
 
-#Тексты
+# Тексты
 @app.route("/texts/<textIDinput>")
 def texts(textIDinput):
     try:
         connTexts = sqlite3.connect("texts.db")
         g = connTexts.cursor()
-        fullPostData = g.execute("SELECT * FROM `texts` WHERE ID=?;", (textIDinput,))
+        fullPostData = g.execute(
+            "SELECT * FROM `texts` WHERE ID=?;", (textIDinput,))
         fullPostData = fullPostData.fetchall()
         fullPostData = fullPostData[0]
         textName = fullPostData[1]
@@ -123,7 +137,7 @@ def texts(textIDinput):
     except IndexError:
         abort(404)
 
-#Текстовый редактор
+# Текстовый редактор
 @app.route("/editor", methods=('POST', 'GET'))
 def editor():
     if session.get("user"):
@@ -131,76 +145,78 @@ def editor():
             conn = sqlite3.connect("texts.db")
             c = conn.cursor()
             temp = 1
-            #make an ID
+            # make an ID
             while temp != 0:
-                randID = random.randint(999999,999999999999)
+                randID = random.randint(999999, 999999999999)
                 c.execute("SELECT * FROM `texts` WHERE ID=?", (randID,))
                 temp = len(c.fetchall())
-            
+
             dateComputer = int(time.time())
-            date = datetime.datetime.fromtimestamp(dateComputer).strftime("%d %b %Y %H:%M")
+            date = datetime.datetime.fromtimestamp(
+                dateComputer).strftime("%d %b %Y %H:%M")
             rating = 0
             author = session["user"]
             textContent = request.form['text']
             textContent = cleaner(textContent)
             textName = request.form['textName']
             textName = cleaner(textName)
-            fullPostData = [(randID, textName, textContent, author, date, rating, dateComputer)]
+            fullPostData = [(randID, textName, textContent,
+                             author, date, rating, dateComputer)]
 
-            c.executemany("INSERT INTO `texts` VALUES(?,?,?,?,?,?,?)", fullPostData)
+            c.executemany(
+                "INSERT INTO `texts` VALUES(?,?,?,?,?,?,?)", fullPostData)
 
             conn.commit()
             conn.close()
-            
+
             return redirect("/texts/{}".format(randID))
 
-
-
-        return render_template("editor.html")   
+        return render_template("editor.html")
     else:
         return redirect(url_for("login"))
-#О создателях
+# О создателях
 @app.route('/about')
 def about():
     return render_template("about.html")
 
-#Страница пользователя
+# Страница пользователя
 @app.route('/id/<userID>')
 def user(userID):
     try:
         conn = sqlite3.connect("userData.db")
         c = conn.cursor()
-        isReal = c.execute("SELECT nick FROM `userData` WHERE nick=?;", (userID,)).fetchone()
+        isReal = c.execute(
+            "SELECT nick FROM `userData` WHERE nick=?;", (userID,)).fetchone()
         if isReal == None:
             abort(404)
         yourPage = False
         connTexts = sqlite3.connect("texts.db")
         g = connTexts.cursor()
-        
+
         temp = "images/users/{}.jpg".format(userID)
         imageLink = url_for('static', filename=temp)
-        
-        about = c.execute("SELECT about FROM `userData` WHERE nick=?;", (userID,))
-        
+
+        about = c.execute(
+            "SELECT about FROM `userData` WHERE nick=?;", (userID,))
+
         about = about.fetchall()
-        
+
         about = str(about)
         about = about[about.find("'")+1:about.rfind("'")]
-        
-        
-        fullPostData = g.execute("SELECT * FROM `texts` WHERE author=?;", (userID,))
+
+        fullPostData = g.execute(
+            "SELECT * FROM `texts` WHERE author=?;", (userID,))
         fullPostData = fullPostData.fetchall()
-        
-        #if this if your page
+
+        # if this if your page
         if "user" in session:
             if session["user"] == userID:
                 yourPage = True
         emptyPage = False
         if len(str(fullPostData)) == 2:
             emptyPage = True
-                
 
-        conn.commit()   
+        conn.commit()
         conn.close()
         connTexts.commit()
         connTexts.close()
@@ -208,7 +224,7 @@ def user(userID):
     except IndexError:
         abort(404)
 
-#Выход из аккаунта
+# Выход из аккаунта
 @app.route("/logout")
 def logOut():
     session.pop('user', None)
@@ -216,7 +232,7 @@ def logOut():
     time.sleep(0.5)
     return redirect(url_for("login"))
 
-#Забыл пароль  
+# Забыл пароль
 @app.route("/forgot", methods=('POST', 'GET'))
 def forgot():
     if not session.get("user"):
@@ -230,24 +246,24 @@ def forgot():
             email = email[0]
             if email != None:
                 localHash = jwt.encode(
-                                {'reset_password': login, 'exp': time() + 600},
-                                app.config['SECRET_KEY'], algorithm='HS512').decode('utf-8')
+                    {'reset_password': login, 'exp': time() + 600},
+                    app.config['SECRET_KEY'], algorithm='HS512').decode('utf-8')
 
                 link = url_for("/forget/{}".format(localHash))
                 msg = EmailMessage()
                 msg.set_content(link)
                 msg['Subject'] = "Password reset"
                 msg['From'] = "password@{}".format(domain)
-                msg['To'] = email              
+                msg['To'] = email
                 s = smtplib.SMTP('localhost')
                 s.send_message(msg)
                 s.quit()
 
         return render_template("forgot.html")
-    else: 
+    else:
         abort(404)
 
-#Непосредственно забывание пароля
+# Непосредственно забывание пароля
 @app.route("/forget/<localHash>", methods=('POST', 'GET'))
 def forget(localHash):
     data = jwt.decode(localHash, app.config['SECRET_KEY'],
@@ -265,7 +281,7 @@ def forget(localHash):
 
     return render_template("forget.html")
 
-#Редактирование профиля
+# Редактирование профиля
 @app.route("/usercorrect", methods=("POST", "GET"))
 def usercorrect():
     if session.get("user"):
@@ -274,35 +290,37 @@ def usercorrect():
         c = conn.cursor()
         temp = "images/users/{}.jpg".format(userID)
         imageLink = url_for('static', filename=temp)
-        about = c.execute("SELECT about FROM `userData` WHERE nick=?;", (userID,))
-        
+        about = c.execute(
+            "SELECT about FROM `userData` WHERE nick=?;", (userID,))
+
         about = about.fetchall()
-        
+
         about = str(about)
         about = about[about.find("'")+1:about.rfind("'")]
-        
+
         if request.method == "POST":
             if request.form["newAbout"]:
                 newAbout = request.form["newAbout"]
                 if newAbout != about:
-                    c.execute("UPDATE `userData` SET about=? WHERE nick=?", [newAbout, userID])
-                    conn.commit()   
+                    c.execute("UPDATE `userData` SET about=? WHERE nick=?", [
+                              newAbout, userID])
+                    conn.commit()
                     conn.close()
             if request.files.get("newImage"):
                 if 'newImage' not in request.files:
                     flash('No file part, try again')
-                    
+
                 file = request.files['newImage']
                 if file and file.filename.endswith(".jpg"):
                     filename = userID + ".jpg"
                     if os.path.exists("static/images/users/{}.jpg".format(userID)):
                         os.remove("static/images/users/{}.jpg".format(userID))
                     file.save("static/images/users/{}.jpg".format(userID))
-                    #return redirect("/id/{}".format(userID))
+                    # return redirect("/id/{}".format(userID))
             return redirect(url_for("usercorrect"))
         return render_template("usercorrect.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about)
 
-#Кэш не сохраняется, чтобы картинки профиля и описание обновлялись корректно 
+# Кэш не сохраняется, чтобы картинки профиля и описание обновлялись корректно
 @app.after_request
 def add_header(response):
     # response.cache_control.no_store = True
