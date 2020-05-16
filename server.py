@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, json, flash, redirect, url_for, session, abort
+from flask import (Flask, render_template, request, json, flash, redirect, url_for, session, abort)
 from email.message import EmailMessage
 import bcrypt, time, random, datetime, smtplib, jwt, os, sqlite3
 
@@ -71,6 +71,8 @@ def regForm():
             c.execute("INSERT INTO users VALUES (?,?);", reger)
             conn.commit()
             conn.close()
+            connData = sqlite3.connect("userData.db")
+            
             return redirect(url_for("login"))
     return render_template("register.html")
 
@@ -283,7 +285,8 @@ def usercorrect():
                 if file and file.filename.endswith(".jpg"):
                     filename = userID + ".jpg"
                     f.write(str(type(file)))
-                    os.remove("static/images/users/{}.jpg".format(userID))
+                    if os.path.exists("static/images/users/{}.jpg".format(userID)):
+                        os.remove("static/images/users/{}.jpg".format(userID))
                     file.save("static/images/users/{}.jpg".format(userID))
                     f.write("image seems to be edited")
                     return redirect("/id/{}".format(userID))
