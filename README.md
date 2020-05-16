@@ -20,6 +20,6 @@ Password hash encoding,<br>
 About page,<br>
 Centralized Header,<br>
 Centralized Styles<br>
-Forget Password with email
+Forget Password with email<br>
 User profile editing.<br>
 
