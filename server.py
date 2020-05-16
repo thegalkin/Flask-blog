@@ -295,9 +295,9 @@ def usercorrect():
                 file = request.files['newImage']
                 if file and file.filename.endswith(".jpg"):
                     filename = userID + ".jpg"
-                    os.chdir("/static/images/users")
+                    os.chdir("static/images/users")
                     os.remove("{}.jpg".format(userID))
-                    file.save(os.path.join("/static/images/users", filename))
+                    file.save(filename)
                     f.write("image seems to be edited")
                     return redirect(url_for("/id/{}".format(userID)))
 
