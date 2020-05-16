@@ -315,58 +315,5 @@ def add_header(response):
     return response
 
 
-
-#code trash
-"""app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
-admin = Admin(app, name='microblog', template_mode='bootstrap3')"""
-"""@app.route('/register')
-def register():
-    return render_template("register.html")"""
-"""@app.route('/admin')
-@basic_auth.required
-def admin():
-    return render_template("admin/index.html")"""
-"""while about.find(",") != -1:
-            about = about.replace(",", " OR ")"""
-        
-"""posts = posts.split(",")
-posts = [int(posts[i]) for i in range(len(posts))]
-f.write(str(posts) + " - posts" + "\n")"""
-        
-        #fullPostData = texts.query.filter_by(userID=author).first_or_404()
-
-"""{% lilPost = 83 %}
-{% lilPost = post/100 * 10 %}"""
-
-#posts = c.execute("SELECT posts FROM `userData` WHERE nick=?;", (userID,))
-        #temp = ""
-# Страшный костыль, который избавляет от еще большего ужаса из базы данных вида: [('[1,2]',)]
-#dfffff
-#dfdfd
-#gfgfgfg
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 if __name__ == "__main__":
     app.run(debug=True)
