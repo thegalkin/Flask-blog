@@ -15,6 +15,7 @@ app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
 bootstrapTheme = """<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">"""
 domain = "domasdadsasdasdain.ru"
 domain = "localhost"
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 def cleaner(text):
     for i in r"^%&<>\[\]{}]/": # Вычищаем текст от "вирусов"
                 text = text.replace(i, "", -1)
@@ -304,6 +305,14 @@ def usercorrect():
 
         return render_template("usercorrect.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about)
 
+# No caching at all for API endpoints.
+@app.after_request
+def add_header(response):
+    # response.cache_control.no_store = True
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '-1'
+    return response
 
 
 
