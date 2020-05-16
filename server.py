@@ -77,8 +77,13 @@ def regForm():
             g.execute("INSERT INTO `userData` VALUES(?,NULL,?,NULL,NULL);", reger2)
             connData.commit()
             connData.close()
-            if os.path.exists("static/images/users/placeholder.jpg"):
-                shututil.copy("static/images/users/{}.jpg".format(userID))
+            if os.path.exists("static/images/placeholder.jpg"):
+                f = open("dev_output.txt", "a")
+                f.write("starting \n")
+                shutil.copy("static/images/placeholder.jpg", os.path.join("static/images/users/"))
+                f.write("copying \n")
+                os.rename(os.path.join("static/images/users/"), "{}.jpg".format(login))
+                f.write("renaming \n")
             return redirect(url_for("login"))
     return render_template("register.html")
 

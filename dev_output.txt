@@ -1,1 +1,12 @@
-this: newold: [<class 'werkzeug.datastructures.FileStorage'>image seems to be edited
+starting 
+copying 
+renaming 
+starting 
+copying 
+renaming 
+starting 
+copying 
+renaming 
+starting 
+copying 
+renaming 
