@@ -298,7 +298,7 @@ def usercorrect():
                     filename = userID + ".jpg"
                     
                     os.remove("static/images/users/{}.jpg".format(userID))
-                    file.save("static/images/users", filename)
+                    file.save("/static/images/users", filename)
                     f.write("image seems to be edited")
                     return redirect("/id/{}".format(userID))
 
