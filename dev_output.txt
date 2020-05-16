@@ -1,1 +1,1 @@
-image seems to be editedimage seems to be editedimage seems to be edited
+<class 'werkzeug.datastructures.FileStorage'>image seems to be edited<class 'werkzeug.datastructures.FileStorage'>image seems to be edited
