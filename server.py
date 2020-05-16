@@ -19,7 +19,6 @@ def cleaner(text):
 #Логин
 @app.route("/login", methods=('POST', 'GET'))
 def login():
-    f = open("dev_output.txt", "a+")
     if request.method == 'POST':
         #подключение форм
         login = request.form['inputLogin']
@@ -78,11 +77,9 @@ def regForm():
             connData.commit()
             connData.close()
             if os.path.exists("static/images/placeholder.jpg"):
-                f = open("dev_output.txt", "a")
                 
                 shutil.copy("static/images/placeholder.jpg", "static/images/users/{}.jpg".format(login))
             
-                f.write("renaming \n")
             return redirect(url_for("login"))
     return render_template("register.html")
 
@@ -167,7 +164,7 @@ def editor():
 def about():
     return render_template("about.html")
 
-#User Page
+#Страница пользователя
 @app.route('/id/<userID>')
 def user(userID):
     try:
@@ -177,7 +174,6 @@ def user(userID):
         if isReal == None:
             abort(404)
         yourPage = False
-        f = open("dev_output.txt", "a")
         connTexts = sqlite3.connect("texts.db")
         g = connTexts.cursor()
         
@@ -208,7 +204,6 @@ def user(userID):
         conn.close()
         connTexts.commit()
         connTexts.close()
-        f.close()
         return render_template("userPage.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about, fullPostData=fullPostData, yourPage=yourPage, emptyPage=emptyPage)
     except IndexError:
         abort(404)
@@ -233,7 +228,6 @@ def forgot():
             c.execute("SELECT email FROM `userData` WHERE nick=?", (login,))
             email = c.fetchone()
             email = email[0]
-            f = open("dev_output.txt", "a")
             if email != None:
                 localHash = jwt.encode(
                                 {'reset_password': login, 'exp': time() + 600},
@@ -278,7 +272,6 @@ def usercorrect():
         userID = session.get("user")
         conn = sqlite3.connect("userData.db")
         c = conn.cursor()
-        f = open("dev_output.txt", "a")
         temp = "images/users/{}.jpg".format(userID)
         imageLink = url_for('static', filename=temp)
         about = c.execute("SELECT about FROM `userData` WHERE nick=?;", (userID,))
@@ -302,16 +295,14 @@ def usercorrect():
                 file = request.files['newImage']
                 if file and file.filename.endswith(".jpg"):
                     filename = userID + ".jpg"
-                    f.write(str(type(file)))
                     if os.path.exists("static/images/users/{}.jpg".format(userID)):
                         os.remove("static/images/users/{}.jpg".format(userID))
                     file.save("static/images/users/{}.jpg".format(userID))
-                    f.write("image seems to be edited")
                     #return redirect("/id/{}".format(userID))
             return redirect(url_for("usercorrect"))
         return render_template("usercorrect.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about)
 
-# No caching at all for API endpoints.
+#Кэш не сохраняется, чтобы картинки профиля и описание обновлялись корректно 
 @app.after_request
 def add_header(response):
     # response.cache_control.no_store = True
