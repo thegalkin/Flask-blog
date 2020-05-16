@@ -20,5 +20,6 @@ Password hash encoding,<br>
 About page,<br>
 Centralized Header,<br>
 Centralized Styles<br>
-Forget Password with email(doesn't work withot domain...but give it a try)<br>
+Forget Password with email
 User profile editing.<br>
+
