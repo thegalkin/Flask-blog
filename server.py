@@ -283,13 +283,10 @@ def usercorrect():
         about = about[about.find("'")+1:about.rfind("'")]
         
         if request.method == "POST":
-            f.write(request.form["newAbout"])
             if request.form["newAbout"]:
-                f.write('something3')
                 newAbout = request.form["newAbout"]
                 if newAbout != about:
-                    f.write("that's a new about: {}".format(about))
-                    #c.execute("UPDATE `userData` SET about=? WHERE nick=?", [newAbout, userID])
+                    c.execute("UPDATE `userData` SET about=? WHERE nick=?", [newAbout, userID])
 
             if request.files.get("newImage"):
                 if 'newImage' not in request.files:
