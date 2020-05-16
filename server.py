@@ -79,10 +79,9 @@ def regForm():
             connData.close()
             if os.path.exists("static/images/placeholder.jpg"):
                 f = open("dev_output.txt", "a")
-                f.write("starting \n")
-                shutil.copy("static/images/placeholder.jpg", os.path.join("static/images/users/"))
-                f.write("copying \n")
-                os.rename(os.path.join("static/images/users/"), "{}.jpg".format(login))
+                
+                shutil.copy("static/images/placeholder.jpg", "static/images/users/{}.jpg".format(login))
+            
                 f.write("renaming \n")
             return redirect(url_for("login"))
     return render_template("register.html")
@@ -172,14 +171,19 @@ def about():
 @app.route('/id/<userID>')
 def user(userID):
     try:
+        conn = sqlite3.connect("userData.db")
+        c = conn.cursor()
+        isReal = c.execute("SELECT nick FROM `userData` WHERE nick=?;", (userID,)).fetchone()
+        if isReal == None:
+            abort(404)
         yourPage = False
         f = open("dev_output.txt", "a")
         connTexts = sqlite3.connect("texts.db")
         g = connTexts.cursor()
-        conn = sqlite3.connect("userData.db")
-        c = conn.cursor()
+        
         temp = "images/users/{}.jpg".format(userID)
         imageLink = url_for('static', filename=temp)
+        
         about = c.execute("SELECT about FROM `userData` WHERE nick=?;", (userID,))
         
         about = about.fetchall()
@@ -190,12 +194,14 @@ def user(userID):
         
         fullPostData = g.execute("SELECT * FROM `texts` WHERE author=?;", (userID,))
         fullPostData = fullPostData.fetchall()
-
+        
         #if this if your page
         if "user" in session:
             if session["user"] == userID:
                 yourPage = True
-            
+        emptyPage = False
+        if len(str(fullPostData)) == 2:
+            emptyPage = True
                 
 
         conn.commit()   
@@ -203,7 +209,7 @@ def user(userID):
         connTexts.commit()
         connTexts.close()
         f.close()
-        return render_template("userPage.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about, fullPostData=fullPostData, yourPage=yourPage)
+        return render_template("userPage.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about, fullPostData=fullPostData, yourPage=yourPage, emptyPage=emptyPage)
     except IndexError:
         abort(404)
 

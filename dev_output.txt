@@ -1,12 +1,3 @@
-starting 
-copying 
 renaming 
-starting 
-copying 
-renaming 
-starting 
-copying 
-renaming 
-starting 
-copying 
-renaming 
+--:[]renaming 
+<class 'werkzeug.datastructures.FileStorage'>image seems to be edited

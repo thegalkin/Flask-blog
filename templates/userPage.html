@@ -34,7 +34,9 @@
             
                 
                 <div class = "center-block" >
-                    
+                    {% if emptyPage %}
+                        <h1 class="serifh1">ain't nothing yet</h1>
+                    {% endif %}
                     {% block poster %}
                     {% for post in fullPostData %}
                         <div class = "jumbotron" style="width: 898px;">
@@ -77,6 +79,11 @@
             
             <div class="col-md text-center">
                 {% if yourPage == True %}
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
                 <a href="/editor">
                 <input class="btn btn-primary btn-lg bigButton serifh1" type="button" value="Post smth!">
                 </a>
