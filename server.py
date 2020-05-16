@@ -1,31 +1,21 @@
 from flask import Flask, render_template, request, json, flash, redirect, url_for, session, abort
-import sqlite3
-#from flask_admin import Admin
-#from flask_basicauth import BasicAuth
-import bcrypt
-import time
-import random
-import datetime
-import smtplib
-import jwt
-import os
 from email.message import EmailMessage
+import bcrypt, time, random, datetime, smtplib, jwt, os, sqlite3
+
+
+
 app = Flask(__name__)
 app.secret_key = b"HJ22$@sa#9HdSEsdwddc-s-$"
 bootstrapTheme = """<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">"""
 domain = "domasdadsasdasdain.ru"
-domain = "localhost"
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
+# Вычищаем текст от "вирусов"
 def cleaner(text):
-    for i in r"^%&<>\[\]{}]/": # Вычищаем текст от "вирусов"
+    for i in r"^%&<>\[\]{}]/": 
                 text = text.replace(i, "", -1)
     return text
-def allowed_file(filename):
-    if '.' in filename:
-        if filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS:
-            return True
-        else:
-            return False
+
 #Логин
 @app.route("/login", methods=('POST', 'GET'))
 def login():
@@ -39,13 +29,8 @@ def login():
         #подключение бд
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
-        """connUserData = sqlite3.connect("userData.db")
-        g = connUserData.cursor()"""
         c.execute("SELECT password FROM `users` WHERE login=?;", (login,))
-        #f.write("{}\n".format(c))
         hashedPassword = c.fetchall()
-        """g.execute("SELECT image FROM `userData` WHERE nick=?", (login,))
-        userIcon = g.fetchone()"""
         if len(hashedPassword) != 0:
             #хеш проверка и итог
             
@@ -70,11 +55,9 @@ def regForm():
     if request.method == 'POST':
         login = request.form['inputLogin']
         login = cleaner(login)
-        #f.write("email is:{}".format(email))
         password = request.form['inputPassword']
         password = cleaner(password)
         password = password.encode('UTF-8')
-        #f.write("password is:{}".format(password))
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
         c.execute("SELECT * FROM `users` WHERE login=?;", (login,))
@@ -85,8 +68,6 @@ def regForm():
             return redirect(url_for("AuthError"))
         else:
             reger = [login, bcrypt.hashpw(password, bcrypt.gensalt())]
-            #f.write("reger is:{}".format(reger))
-            #f.close()
             c.execute("INSERT INTO users VALUES (?,?);", reger)
             conn.commit()
             conn.close()
@@ -112,7 +93,6 @@ def main():
     return render_template("index.html", fullPostData=latestPosts)
 
 #404
-
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html'), 404
@@ -133,6 +113,7 @@ def texts(textIDinput):
         return render_template("texts.html", textIDinput=textIDinput, textName=textName, textContents=textContents, author=author, date=date)
     except IndexError:
         abort(404)
+
 #Текстовый редактор
 @app.route("/editor", methods=('POST', 'GET'))
 def editor():
@@ -161,8 +142,6 @@ def editor():
 
             conn.commit()
             conn.close()
-            """with open("dev_output.txt", "a") as f:
-                f.write(postText + "\n")"""
             return redirect("/texts/{}".format(randID))
 
 
@@ -175,7 +154,7 @@ def editor():
 def about():
     return render_template("about.html")
 
- #User Page
+#User Page
 @app.route('/id/<userID>')
 def user(userID):
     try:
@@ -213,12 +192,16 @@ def user(userID):
         return render_template("userPage.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about, fullPostData=fullPostData, yourPage=yourPage)
     except IndexError:
         abort(404)
+
+#Выход из аккаунта
 @app.route("/logout")
 def logOut():
     session.pop('user', None)
     session.pop('icon', None)
     time.sleep(0.5)
     return redirect(url_for("login"))
+
+#Забыл пароль  
 @app.route("/forgot", methods=('POST', 'GET'))
 def forgot():
     if not session.get("user"):
@@ -240,7 +223,7 @@ def forgot():
                 msg = EmailMessage()
                 msg.set_content(link)
                 msg['Subject'] = "Password reset"
-                msg['From'] = "gozammer@gmail.com" #"password@{}".format(domain)
+                msg['From'] = "password@{}".format(domain)
                 msg['To'] = email              
                 s = smtplib.SMTP('localhost')
                 s.send_message(msg)
@@ -250,6 +233,7 @@ def forgot():
     else: 
         abort(404)
 
+#Непосредственно забывание пароля
 @app.route("/forget/<localHash>", methods=('POST', 'GET'))
 def forget(localHash):
     data = jwt.decode(localHash, app.config['SECRET_KEY'],
@@ -267,6 +251,7 @@ def forget(localHash):
 
     return render_template("forget.html")
 
+#Редактирование профиля
 @app.route("/usercorrect", methods=("POST", "GET"))
 def usercorrect():
     if session.get("user"):
