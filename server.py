@@ -148,12 +148,7 @@ def editor():
 
             conn.commit()
             conn.close()
-            connData = sqlite3.connect("userData.db")
-            g = connData.cursor()
-            reger2 = [login, "Hi everyone, this is me"]
-            g.execute("INSERT INTO `userData` VALUES(?,NULL,?,NULL,NULL);", reger)
-            connData.commit()
-            connData.close()
+            
             return redirect("/texts/{}".format(randID))
 
 
