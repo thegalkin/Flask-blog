@@ -2,24 +2,25 @@
 Запуск через server.py<br>
 <br>
 На данный момент скорее всего работает:<br>
-Login,<br>
-Register,<br>
-Users db,<br>
-User Data db<br>
-Posts db,<br>
-Text Editor,<br>
-Post Page,<br>
-Posts Render,<br>
-Favicon,<br>
-User Page,<br>
-Sessions on cookies,<br>
-Post adding,<br>
-Cleaning from code symbols in input,<br>
-Password hash encoding,<br>
-404 handler,<br>
-About page,<br>
-Centralized Header,<br>
-Centralized Styles<br>
-Forget Password with email<br>
-User profile editing.<br>
-
+<ol>
+  <ul>Login,<br>
+  <ul>Register,<br>
+  <ul>Users db,<br>
+  <ul>User Data db<br>
+  <ul>Posts db,<br>
+  <ul>Text Editor,<br>
+  <ul>Post Page,<br>
+  <ul>Posts Render,<br>
+  <ul>Favicon,<br>
+  <ul>User Page,<br>
+  <ul>Sessions on cookies,<br>
+  <ul>Post adding,<br>
+  <ul>Cleaning from code symbols in input,<br>
+  <ul>Password hash encoding,<br>
+  <ul>404 handler,<br>
+  <ul>About page,<br>
+  <ul>Centralized Header,<br>
+  <ul><ul>Centralized Styles<br>
+  <ul>Forget Password with email<br>
+  <ul>User profile editing.<br>
+</ol>
