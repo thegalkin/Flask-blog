@@ -1,7 +1,7 @@
-# Flusk-site
-Запуск через server.py
-
-На данный момент скорее всего работает:
+# Flusk-site<br>
+Запуск через server.py<br>
+<br>
+На данный момент скорее всего работает:<br>
 Login,<br>
 Register,<br>
 Users db,<br>
