@@ -287,7 +287,8 @@ def usercorrect():
                 newAbout = request.form["newAbout"]
                 if newAbout != about:
                     c.execute("UPDATE `userData` SET about=? WHERE nick=?", [newAbout, userID])
-
+                    conn.commit()   
+                    conn.close()
             if request.files.get("newImage"):
                 if 'newImage' not in request.files:
                     flash('No file part, try again')
@@ -295,11 +296,11 @@ def usercorrect():
                 file = request.files['newImage']
                 if file and file.filename.endswith(".jpg"):
                     filename = userID + ".jpg"
-                    os.chdir("static/images/users")
-                    os.remove("{}.jpg".format(userID))
-                    file.save(filename)
+                    
+                    os.remove("static/images/users/{}.jpg".format(userID))
+                    file.save("static/images/users", filename)
                     f.write("image seems to be edited")
-                    return redirect(url_for("/id/{}".format(userID)))
+                    return redirect("/id/{}".format(userID))
 
         return render_template("usercorrect.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about)
 
