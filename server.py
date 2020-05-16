@@ -1,6 +1,6 @@
 from flask import (Flask, render_template, request, json, flash, redirect, url_for, session, abort)
 from email.message import EmailMessage
-import bcrypt, time, random, datetime, smtplib, jwt, os, sqlite3
+import bcrypt, time, random, datetime, smtplib, jwt, os, sqlite3, shutil
 
 
 
@@ -74,9 +74,11 @@ def regForm():
             connData = sqlite3.connect("userData.db")
             g = connData.cursor()
             reger2 = [login, "Hi everyone, this is me"]
-            g.execute("INSERT INTO `userData` VALUES(?,NULL,?,NULL,NULL);", reger)
+            g.execute("INSERT INTO `userData` VALUES(?,NULL,?,NULL,NULL);", reger2)
             connData.commit()
             connData.close()
+            if os.path.exists("static/images/users/placeholder.jpg"):
+                shututil.copy("static/images/users/{}.jpg".format(userID))
             return redirect(url_for("login"))
     return render_template("register.html")
 
@@ -294,8 +296,8 @@ def usercorrect():
                         os.remove("static/images/users/{}.jpg".format(userID))
                     file.save("static/images/users/{}.jpg".format(userID))
                     f.write("image seems to be edited")
-                    return redirect("/id/{}".format(userID))
-
+                    #return redirect("/id/{}".format(userID))
+            return redirect(url_for("usercorrect"))
         return render_template("usercorrect.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about)
 
 # No caching at all for API endpoints.
