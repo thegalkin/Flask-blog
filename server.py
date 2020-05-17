@@ -108,7 +108,7 @@ def main():
     connTexts = sqlite3.connect("texts.db")
     g = connTexts.cursor()
     latestPosts = g.execute(
-        "SELECT * FROM `texts` ORDER BY dateComputer ASC LIMIT 5;")
+        "SELECT * FROM `texts` ORDER BY dateComputer DESC LIMIT 5;")
     latestPosts = latestPosts.fetchall()
     connTexts.commit()
     connTexts.close()
@@ -301,6 +301,7 @@ def usercorrect():
         if request.method == "POST":
             if request.form["newAbout"]:
                 newAbout = request.form["newAbout"]
+                newAbout = cleaner(newAbout)
                 if newAbout != about:
                     c.execute("UPDATE `userData` SET about=? WHERE nick=?", [
                               newAbout, userID])
@@ -316,7 +317,6 @@ def usercorrect():
                     if os.path.exists("static/images/users/{}.jpg".format(userID)):
                         os.remove("static/images/users/{}.jpg".format(userID))
                     file.save("static/images/users/{}.jpg".format(userID))
-                    # return redirect("/id/{}".format(userID))
             return redirect(url_for("usercorrect"))
         return render_template("usercorrect.html", bootstrapTheme=bootstrapTheme, nick=userID, imageLink=imageLink, about=about)
 
