@@ -1,7 +1,7 @@
 # Flusk-site<br>
-Запуск через server.py<br>
+Run it with server.py<br>
 <br>
-На данный момент скорее всего работает:<br>
+Following functions probably work:<br>
 <ul>
 <li>Login,</li>
 <li>Register,</li>
